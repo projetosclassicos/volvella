@@ -1,0 +1,1545 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Volvella Grammatica</title>
+  <meta name="description" content="Instrumento rotativo para síntese morfológica dos verbos do Grego Antigo." />
+  <style id="volvella-css">
+    :root {
+      --font-greek: "Cormorant Garamond", "Gentium Plus", "EB Garamond", "Palatino Linotype", Palatino, "Book Antiqua", "GFS Didot", "Noto Serif", "DejaVu Serif", "Liberation Serif", Georgia, "Times New Roman", serif;
+      --font-sans: "Plus Jakarta Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      --font-mono: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+
+      --bg-page: #FAF9F5;
+      --bg-surface: #FFFFFF;
+      --bg-subtle: #F5F3EE;
+      --bg-warm: #FAF6EC;
+      --ink-950: #141210;
+      --ink-900: #1C1917;
+      --ink-700: #44403C;
+      --ink-600: #57534E;
+      --ink-500: #78716C;
+      --ink-400: #A8A29E;
+      --border-200: #E7E5E0;
+      --border-300: #D6D3D1;
+
+      --pigment: #6B1D2F;
+      --pigment-hover: #561625;
+      --pigment-muted: #9E5A68;
+      --pigment-soft: rgba(107, 29, 47, 0.08);
+      --paper-d1: #FDFCF8;
+      --paper-d2: #F4EFE4;
+      --paper-d3: #EAE3D3;
+
+      --page-w: 210mm;
+      --page-h: 297mm;
+    }
+
+    *, *::before, *::after {
+      box-sizing: border-box;
+    }
+
+    html, body {
+      margin: 0;
+      padding: 0;
+      background-color: var(--bg-page);
+      color: var(--ink-900);
+      font-family: var(--font-sans);
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    button, input, select, textarea {
+      font-family: inherit;
+      color: inherit;
+    }
+
+    button {
+      cursor: pointer;
+      background: transparent;
+      border: none;
+    }
+
+    .font-greek {
+      font-family: var(--font-greek);
+      font-feature-settings: "kern" 1, "liga" 1;
+    }
+
+    .font-mono {
+      font-family: var(--font-mono);
+    }
+
+    .tabular-nums {
+      font-variant-numeric: tabular-nums;
+    }
+
+    .top-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+      padding: 12px 24px;
+      background: var(--bg-surface);
+      border-bottom: 1px solid var(--border-200);
+      flex-wrap: wrap;
+    }
+
+    .brand-link {
+      font-family: var(--font-greek);
+      font-size: 1.55rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      color: var(--pigment);
+      text-decoration: none;
+      white-space: nowrap;
+    }
+
+    .top-nav {
+      display: flex;
+      align-items: center;
+      gap: 22px;
+      overflow-x: auto;
+    }
+
+    .nav-tab {
+      padding: 6px 2px;
+      font-size: 0.86rem;
+      font-weight: 500;
+      color: var(--ink-600);
+      border-bottom: 2px solid transparent;
+      white-space: nowrap;
+      transition: color 0.15s ease, border-color 0.15s ease;
+    }
+
+    .nav-tab:hover {
+      color: var(--ink-900);
+    }
+
+    .nav-tab.active {
+      color: var(--ink-950);
+      font-weight: 600;
+      border-bottom-color: var(--pigment);
+    }
+
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-shrink: 0;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 7px;
+      padding: 8px 14px;
+      font-size: 0.78rem;
+      font-weight: 600;
+      border-radius: 6px;
+      white-space: nowrap;
+      transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+    }
+
+    .btn-primary {
+      background-color: var(--pigment);
+      color: #FFFFFF;
+      border: 1px solid var(--pigment);
+    }
+
+    .btn-primary:hover {
+      background-color: var(--pigment-hover);
+      border-color: var(--pigment-hover);
+    }
+
+    .btn-secondary {
+      background-color: #FAF9F6;
+      color: var(--ink-700);
+      border: 1px solid var(--border-300);
+    }
+
+    .btn-secondary:hover {
+      background-color: #F0EEE8;
+      color: var(--ink-950);
+    }
+
+    .btn-sm {
+      padding: 5px 10px;
+      font-size: 0.74rem;
+    }
+
+    .studio-main {
+      max-width: 1640px;
+      width: 100%;
+      margin: 0 auto;
+      padding: 20px 24px 36px;
+      display: grid;
+      grid-template-columns: minmax(0, 7.6fr) minmax(360px, 4.4fr);
+      gap: 24px;
+      align-items: start;
+    }
+
+    @media (max-width: 1080px) {
+      .studio-main {
+        grid-template-columns: 1fr;
+        padding: 16px;
+      }
+    }
+
+    .card {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-200);
+      border-radius: 12px;
+      padding: 20px;
+    }
+
+    .stage-card {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .toolbar-row {
+      width: 100%;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding-bottom: 12px;
+      margin-bottom: 12px;
+      border-bottom: 1px solid #F1EFEA;
+    }
+
+    .segmented-group {
+      display: inline-flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 4px;
+      padding: 4px;
+      background: #F1EFEA;
+      border: 1px solid var(--border-200);
+      border-radius: 8px;
+    }
+
+    .seg-btn {
+      padding: 6px 11px;
+      font-size: 0.76rem;
+      font-weight: 500;
+      color: var(--ink-600);
+      border-radius: 6px;
+      white-space: nowrap;
+      transition: all 0.14s ease;
+    }
+
+    .seg-btn:hover {
+      color: var(--ink-950);
+    }
+
+    .seg-btn.active {
+      background: #FFFFFF;
+      color: var(--pigment);
+      font-weight: 600;
+      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.06);
+    }
+
+    .verb-stepper {
+      display: inline-flex;
+      align-items: center;
+      background: var(--bg-page);
+      border: 1px solid var(--border-300);
+      border-radius: 7px;
+    }
+
+    .step-arrow {
+      padding: 7px 10px;
+      color: var(--ink-600);
+      font-size: 0.9rem;
+    }
+
+    .step-arrow:hover {
+      color: var(--ink-950);
+    }
+
+    .verb-select {
+      border: none;
+      background: transparent;
+      padding: 6px 8px;
+      font-family: var(--font-greek);
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: var(--ink-950);
+      cursor: pointer;
+      outline: none;
+      max-width: 320px;
+    }
+
+    .swatch-row {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+    }
+
+    .swatch-dot {
+      width: 16px;
+      height: 16px;
+      border-radius: 999px;
+      opacity: 0.72;
+      transition: transform 0.15s ease, opacity 0.15s ease;
+    }
+
+    .swatch-dot:hover {
+      opacity: 1;
+    }
+
+    .swatch-dot.active {
+      opacity: 1;
+      transform: scale(1.22);
+      box-shadow: 0 0 0 2px #FFFFFF, 0 0 0 4px var(--ink-400);
+    }
+
+    .volvella-svg-wrap {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 4px 0;
+    }
+
+    .volvella-svg {
+      width: 100%;
+      height: auto;
+      max-width: 860px;
+      max-height: 860px;
+      user-select: none;
+    }
+
+    .svg-clickable {
+      cursor: pointer;
+    }
+
+    .stage-footer {
+      width: 100%;
+      padding-top: 12px;
+      margin-top: 8px;
+      border-top: 1px solid #F1EFEA;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      font-size: 0.75rem;
+      color: var(--ink-500);
+    }
+
+    .aside-stack {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .loupe-outer-d3 {
+      padding: 6px;
+      border-radius: 12px;
+      border: 2px solid var(--ink-700);
+      background: #EFECE4;
+      display: grid;
+      grid-template-columns: 5fr 7fr;
+      gap: 5px;
+      align-items: stretch;
+    }
+
+    .loupe-cutout-d2 {
+      padding: 4px;
+      border-radius: 6px;
+      border: 1px dashed var(--pigment);
+      background: rgba(214, 211, 209, 0.45);
+      display: flex;
+      align-items: stretch;
+    }
+
+    .loupe-cell-d1 {
+      width: 100%;
+      padding: 12px 10px 12px 8px;
+      border-radius: 2px;
+      border: 1px solid var(--border-300);
+      background: #FFFDF9;
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+    }
+
+    .loupe-plate-d2 {
+      padding: 10px 11px;
+      border-radius: 6px;
+      border: 1px solid var(--border-300);
+      background: var(--bg-warm);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .triad-list {
+      border: 1px solid var(--border-200);
+      border-radius: 8px;
+      overflow: hidden;
+    }
+
+    .triad-item {
+      width: 100%;
+      text-align: left;
+      padding: 10px 14px;
+      background: #FFFFFF;
+      border-bottom: 1px solid #F1EFEA;
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+      transition: background-color 0.14s ease;
+    }
+
+    .triad-item:last-child {
+      border-bottom: none;
+    }
+
+    .triad-item:hover {
+      background: #FAF9F6;
+    }
+
+    .triad-item.active {
+      background: var(--pigment-soft);
+    }
+
+    .win-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 8px;
+    }
+
+    @media (max-width: 520px) {
+      .win-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .win-btn {
+      padding: 8px 11px;
+      text-align: left;
+      border-radius: 6px;
+      border: 1px solid var(--border-200);
+      background: #FFFFFF;
+      font-size: 0.76rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+    }
+
+    .win-btn:hover {
+      background: #FAF9F6;
+    }
+
+    .win-btn.active {
+      border-color: var(--pigment);
+      background: var(--pigment-soft);
+      font-weight: 600;
+      color: var(--ink-950);
+    }
+
+    .field-label {
+      display: block;
+      font-size: 0.71rem;
+      font-weight: 600;
+      color: var(--ink-600);
+      margin-bottom: 4px;
+    }
+
+    .text-input, .num-input, .select-input, .code-textarea {
+      width: 100%;
+      padding: 6px 9px;
+      font-size: 0.82rem;
+      background: #FFFFFF;
+      border: 1px solid var(--border-300);
+      border-radius: 5px;
+      outline: none;
+    }
+
+    .text-input:focus, .num-input:focus, .select-input:focus, .code-textarea:focus {
+      border-color: var(--ink-900);
+    }
+
+    .grid-2 {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 10px;
+    }
+
+    .grid-3 {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 10px;
+    }
+
+    .grid-5 {
+      display: grid;
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      gap: 8px;
+    }
+
+    .data-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.74rem;
+    }
+
+    .data-table th, .data-table td {
+      padding: 6px 10px;
+      text-align: left;
+      border-bottom: 1px solid #F1EFEA;
+    }
+
+    .data-table th {
+      background: #FAF9F6;
+      color: var(--ink-600);
+      font-weight: 600;
+      border-bottom: 1px solid var(--border-200);
+    }
+
+    .notice-ok {
+      padding: 8px 12px;
+      border-radius: 6px;
+      background: #ECFDF5;
+      border: 1px solid #A7F3D0;
+      color: #065F46;
+      font-size: 0.76rem;
+      font-weight: 500;
+    }
+
+    .notice-err {
+      padding: 8px 12px;
+      border-radius: 6px;
+      background: #FEF2F2;
+      border: 1px solid #FECACA;
+      color: #991B1B;
+      font-size: 0.76rem;
+    }
+
+    /* Impressão Responsiva (A4 / A3) */
+    .print-studio-bg {
+      min-height: 100vh;
+      background: #E7E5E0;
+      padding-bottom: 40px;
+    }
+
+    .print-toolbar {
+      position: sticky;
+      top: 0;
+      z-index: 40;
+      background: #FFFFFF;
+      border-bottom: 1px solid var(--border-300);
+      padding: 12px 24px;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+    }
+
+    .print-pages-stack {
+      padding: 24px 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 28px;
+    }
+
+    .volvella-print-page {
+      width: var(--page-w);
+      height: var(--page-h);
+      background: #FFFFFF;
+      border: 1px solid var(--border-300);
+      box-shadow: 0 10px 24px rgba(0, 0, 0, 0.1);
+      padding: 8mm 8mm 7mm 8mm;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .hidden-print-mount {
+      display: none;
+    }
+
+    @media print {
+      html, body {
+        width: var(--page-w) !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        background: #FFFFFF !important;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+      }
+
+      .no-print {
+        display: none !important;
+      }
+
+      .hidden-print-mount {
+        display: block !important;
+      }
+
+      .print-studio-bg {
+        background: #FFFFFF !important;
+        padding: 0 !important;
+      }
+
+      .print-pages-stack {
+        padding: 0 !important;
+        gap: 0 !important;
+        display: block !important;
+      }
+
+      .volvella-print-page {
+        width: var(--page-w) !important;
+        height: var(--page-h) !important;
+        margin: 0 auto !important;
+        padding: 8mm 8mm 7mm 8mm !important;
+        border: none !important;
+        box-shadow: none !important;
+        page-break-after: always;
+        break-after: page;
+        page-break-inside: avoid;
+        break-inside: avoid;
+        overflow: hidden !important;
+      }
+
+      .volvella-print-page:last-child {
+        page-break-after: auto;
+        break-after: auto;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div id="app"></div>
+
+  <script id="volvella-state">window.__VOLVELLA_SAVED_STATE__ = null;</script>
+
+  <script id="volvella-js">
+    (function () {
+      'use strict';
+
+      /* =========================================================================
+         1. TEMAS E METADADOS
+         ========================================================================= */
+      var PIGMENT_THEMES = {
+        crimson: { id: 'crimson', label: 'Rubrica Aldina', hex: '#6B1D2F', hoverHex: '#561625', mutedHex: '#9E5A68', softRgba: 'rgba(107, 29, 47, 0.08)', paperDisc1: '#FDFCF8', paperDisc2: '#F4EFE4', paperDisc3: '#EAE3D3' },
+        cobalt: { id: 'cobalt', label: 'Kýanos Ático', hex: '#1E3A5F', hoverHex: '#162B47', mutedHex: '#5B7596', softRgba: 'rgba(30, 58, 95, 0.08)', paperDisc1: '#FCFDFE', paperDisc2: '#EEF2F6', paperDisc3: '#E2E8F0' },
+        bronze: { id: 'bronze', label: 'Chalkós Coríntio', hex: '#784717', hoverHex: '#5E3711', mutedHex: '#A3794F', softRgba: 'rgba(120, 71, 23, 0.08)', paperDisc1: '#FDFBF7', paperDisc2: '#F5EFE3', paperDisc3: '#EBE2D0' },
+        obsidian: { id: 'obsidian', label: 'Mélas Cerâmico', hex: '#1C1917', hoverHex: '#292524', mutedHex: '#57534E', softRgba: 'rgba(28, 25, 23, 0.08)', paperDisc1: '#FDFDFC', paperDisc2: '#F2F0EC', paperDisc3: '#E5E2DC' }
+      };
+
+      var VOICE_METADATA = {
+        active: { label: 'Ativa', greekLabel: 'Ἐνεργητική', stepMultiplier: -1 },
+        middle: { label: 'Média', greekLabel: 'Μέση', stepMultiplier: 0 },
+        passive: { label: 'Passiva', greekLabel: 'Παθητική', stepMultiplier: 1 }
+      };
+
+      var VOICES_ORDER = ['active', 'middle', 'passive'];
+      var DECK_ORDER = ['omega_barytone', 'omega_contract', 'mi_athematic'];
+
+      var DISC_DECK_METADATA = {
+        omega_barytone: { id: 'omega_barytone', shortLabel: 'Roda -ω · Barítonos', fullTitle: 'Disco 1-Ω (Série I — Verbos Barítonos em -ω)', system: 'omega', subtitle: 'λύω · παιδεύω · λείπω · ἄγω' },
+        omega_contract: { id: 'omega_contract', shortLabel: 'Roda -ω · Contratos', fullTitle: 'Disco 1-Ω (Série II — Contratos -άω/-έω/-όω + Líquido)', system: 'omega', subtitle: 'τιμάω · ποιέω · δηλόω · φαίνω' },
+        mi_athematic: { id: 'mi_athematic', shortLabel: 'Disco -μι · Atemáticos', fullTitle: 'Disco 1-ΜΙ Separado (Verbos Atemáticos Reduplicados em -μι)', system: 'mi', subtitle: 'τίθημι · δίδωμι · ἵστημι · ἵημι' }
+      };
+
+      /* =========================================================================
+         2. PLACAS DESINENCIAIS FIXAS DO DISCO 2
+         ========================================================================= */
+      var HUEBER_DESINENCE_PLATES = {
+        pres_ind: {
+          active: { slotKey: 'pres_ind', voice: 'active', requiredStemKey: 'I', principalPartLabel: 'I', primarySuffix: '-ω', plateLines: ['1.} -ω, -ομεν', '2.} -εις, -ετε', '3.} -ει, -ουσι(ν)'], expandedEndings: ['Barítonos: 1ª sg -ω · 2ª sg -εις · 3ª sg -ει · 1ª pl -ομεν · 2ª pl -ετε · 3ª pl -ουσι(ν)', 'Contratos (-άω/-έω/-όω): -ῶ, -ᾷς/-εῖς/-οῖς, -ᾷ/-εῖ/-οῖ, -ῶμεν/-οῦμεν/-οῦμεν, -ᾶτε/-εῖτε/-οῦτε, -ῶσι/-οῦσι/-οῦσι'] },
+          middle: { slotKey: 'pres_ind', voice: 'middle', requiredStemKey: 'I', principalPartLabel: 'I', primarySuffix: '-ομαι', plateLines: ['1.} -ομαι, -όμεθα', '2.} -ῃ, -εσθε', '3.} -εται, -ονται'], expandedEndings: ['Barítonos: -ομαι, -ῃ (-ει), -εται, -όμεθα, -εσθε, -ονται', 'Contratos: -ῶμαι/-οῦμαι/-οῦμαι, -ᾷ/-ῇ/-οῖ, -ᾶται/-εῖται/-οῦται'] },
+          passive: { slotKey: 'pres_ind', voice: 'passive', requiredStemKey: 'I', principalPartLabel: 'I', primarySuffix: '-ομαι', plateLines: ['1.} -ομαι, -όμεθα', '2.} -ῃ, -εσθε', '3.} -εται, -ονται'], expandedEndings: ['Barítonos: -ομαι, -ῃ (-ει), -εται, -όμεθα, -εσθε, -ονται', 'Contratos: -ῶμαι/-οῦμαι/-οῦμαι, -ᾷ/-ῇ/-οῖ, -ᾶται/-εῖται/-οῦται'], philologicalNote: 'Média e Passiva compartilham as desinências.' }
+        },
+        impf_ind: {
+          active: { slotKey: 'impf_ind', voice: 'active', requiredStemKey: 'I_aug', principalPartLabel: 'I', primarySuffix: '-ον', plateLines: ['1.} -ον, -ομεν', '2.} -ες, -ετε', '3.} -ε(ν), -ον'], expandedEndings: ['Barítonos: -ον, -ες, -ε(ν), -ομεν, -ετε, -ον', 'Contratos: -ων/-ουν/-ουν, -ας/-εις/-ους, -α/-ει/-ου, -ῶμεν/-οῦμεν, -ᾶτε/-εῖτε/-οῦτε, -ων/-ουν/-ουν'] },
+          middle: { slotKey: 'impf_ind', voice: 'middle', requiredStemKey: 'I_aug', principalPartLabel: 'I', primarySuffix: '-όμην', plateLines: ['1.} -όμην, -όμεθα', '2.} -ου, -εσθε', '3.} -ετο, -οντο'], expandedEndings: ['Barítonos: -όμην, -ου, -ετο, -όμεθα, -εσθε, -οντο', 'Contratos: -ώμην/-ούμην/-ούμην, -ῶ/-οῦ/-οῦ, -ᾶτο/-εῖτο/-οῦτο'] },
+          passive: { slotKey: 'impf_ind', voice: 'passive', requiredStemKey: 'I_aug', principalPartLabel: 'I', primarySuffix: '-όμην', plateLines: ['1.} -όμην, -όμεθα', '2.} -ου, -εσθε', '3.} -ετο, -οντο'], expandedEndings: ['Barítonos: -όμην, -ου, -ετο, -όμεθα, -εσθε, -οντο', 'Contratos: -ώμην/-ούμην/-ούμην, -ῶ/-οῦ/-οῦ, -ᾶτο/-εῖτο/-οῦτο'], philologicalNote: 'Imperfeito Médio e Passivo alinham o mesmo radical às desinências secundárias.' }
+        },
+        fut_ind: {
+          active: { slotKey: 'fut_ind', voice: 'active', requiredStemKey: 'II', principalPartLabel: 'II', primarySuffix: '-ω', plateLines: ['1.} -ω, -ομεν', '2.} -εις, -ετε', '3.} -ει, -ουσι(ν)'], expandedEndings: ['Sigmático (II): -ω, -εις, -ει, -ομεν, -ετε, -ουσι(ν)', 'Líquido/Nasal (ex. φαν-): futuro contrato em -ῶ, -εῖς, -εῖ, -οῦμεν, -εῖτε, -οῦσι(ν)'] },
+          middle: { slotKey: 'fut_ind', voice: 'middle', requiredStemKey: 'II', principalPartLabel: 'II', primarySuffix: '-ομαι', plateLines: ['1.} -ομαι, -όμεθα', '2.} -ῃ, -εσθε', '3.} -εται, -ονται'], expandedEndings: ['Sigmático (II): -ομαι, -ῃ, -εται, -όμεθα, -εσθε, -ονται', 'Líquido/Nasal (ex. φαν-): -οῦμαι, -ῇ (-εῖ), -εῖται, -ούμεθα, -εῖσθε, -οῦνται'] },
+          passive: { slotKey: 'fut_ind', voice: 'passive', requiredStemKey: 'VI', principalPartLabel: 'VI', primarySuffix: '-ήσομαι', plateLines: ['1.} -ήσομαι', '2.} -ήσῃ, -ήσεσθε', '3.} -ήσεται, -ονται'], expandedEndings: ['1ª sg: -ήσομαι · 2ª sg: -ήσῃ · 3ª sg: -ήσεται · 1ª pl: -ησόμεθα · 2ª pl: -ήσεσθε · 3ª pl: -ήσονται'], philologicalNote: 'Futuro Passivo acopla -ήσομαι ao Tema VI.' }
+        },
+        aor_ind: {
+          active: { slotKey: 'aor_ind', voice: 'active', requiredStemKey: 'III_aug', principalPartLabel: 'III', primarySuffix: '-α (-ον)', plateLines: ['1.} -α, -αμεν (-ον)', '2.} -ας, -ατε (-ες)', '3.} -ε(ν), -αν'], expandedEndings: ['1º Aor. Sigm./Líq.: -α, -ας, -ε(ν), -αμεν, -ατε, -αν', '2º Aor. Temático: -ον, -ες, -ε(ν), -ομεν, -ετε, -ον'], philologicalNote: 'Desinências em -α (1º Aoristo) e temáticas em -ον (2º Aoristo).' },
+          middle: { slotKey: 'aor_ind', voice: 'middle', requiredStemKey: 'III_aug', principalPartLabel: 'III', primarySuffix: '-άμην (-όμην)', plateLines: ['1.} -άμην (-όμην)', '2.} -ω, -ασθε (-ου)', '3.} -ατο (-ετο)'], expandedEndings: ['1º Aor. Sigm./Líq.: -άμην, -ω, -ατο, -άμεθα, -ασθε, -αντο', '2º Aor. Temático: -όμην, -ου, -ετο, -όμεθα, -εσθε, -οντο'] },
+          passive: { slotKey: 'aor_ind', voice: 'passive', requiredStemKey: 'VI_aug', principalPartLabel: 'VI', primarySuffix: '-ην', plateLines: ['1.} -ην, -ημεν', '2.} -ης, -ητε', '3.} -η, -ησαν'], expandedEndings: ['1ª sg: -ην · 2ª sg: -ης · 3ª sg: -η · 1ª pl: -ημεν · 2ª pl: -ητε · 3ª pl: -ησαν'], philologicalNote: 'Universal para 1º Aoristo Passivo (-θ-) e 2º Aoristo Passivo (sem -θ-).' }
+        },
+        perf_ind: {
+          active: { slotKey: 'perf_ind', voice: 'active', requiredStemKey: 'IV', principalPartLabel: 'IV', primarySuffix: '-α', plateLines: ['1.} -α, -αμεν', '2.} -ας, -ατε', '3.} -ε(ν), -ᾶσι(ν)'], expandedEndings: ['1ª sg: -α · 2ª sg: -ας · 3ª sg: -ε(ν) · 1ª pl: -αμεν · 2ª pl: -ατε · 3ª pl: -ᾶσι(ν)'] },
+          middle: { slotKey: 'perf_ind', voice: 'middle', requiredStemKey: 'V', principalPartLabel: 'V', primarySuffix: '-μαι', plateLines: ['1.} -μαι, -μεθα', '2.} -σαι, -σθε', '3.} -ται, -νται'], expandedEndings: ['1ª sg: -μαι · 2ª sg: -σαι · 3ª sg: -ται · 1ª pl: -μεθα · 2ª pl: -σθε · 3ª pl: -νται / -μένοι εἰσί'], philologicalNote: 'Desinências atemáticas diretas sobre o Tema V.' },
+          passive: { slotKey: 'perf_ind', voice: 'passive', requiredStemKey: 'V', principalPartLabel: 'V', primarySuffix: '-μαι', plateLines: ['1.} -μαι, -μεθα', '2.} -σαι, -σθε', '3.} -ται, -νται'], expandedEndings: ['Idêntico ao Médio.'] }
+        },
+        plup_ind: {
+          active: { slotKey: 'plup_ind', voice: 'active', requiredStemKey: 'IV_aug', principalPartLabel: 'IV', primarySuffix: '-η', plateLines: ['1.} -η, -εμεν', '2.} -ης, -ετε', '3.} -ει(ν), -εσαν'], expandedEndings: ['1ª sg: -η (-ειν) · 2ª sg: -ης (-εις) · 3ª sg: -ει(ν) · 1ª pl: -εμεν · 2ª pl: -ετε · 3ª pl: -εσαν'] },
+          middle: { slotKey: 'plup_ind', voice: 'middle', requiredStemKey: 'V_aug', principalPartLabel: 'V', primarySuffix: '-μην', plateLines: ['1.} -μην, -μεθα', '2.} -σο, -σθε', '3.} -το, -ντο'], expandedEndings: ['1ª sg: -μην · 2ª sg: -σο · 3ª sg: -το · 1ª pl: -μεθα · 2ª pl: -σθε · 3ª pl: -ντο'] },
+          passive: { slotKey: 'plup_ind', voice: 'passive', requiredStemKey: 'V_aug', principalPartLabel: 'V', primarySuffix: '-μην', plateLines: ['1.} -μην, -μεθα', '2.} -σο, -σθε', '3.} -το, -ντο'], expandedEndings: ['Idêntico ao Médio.'] }
+        },
+        infinitives: {
+          active: { slotKey: 'infinitives', voice: 'active', requiredStemKey: 'I', principalPartLabel: 'I / III', primarySuffix: '-ειν', plateLines: ['Pr.} -ειν', 'Ao.} -αι (-εῖν)', 'Pf.} IV + -έναι'], expandedEndings: ['Pres. (I): -ειν', 'Aor. 1º (III): -αι · Aor. 2º (III): -εῖν', 'Perf. At. (IV): -έναι'] },
+          middle: { slotKey: 'infinitives', voice: 'middle', requiredStemKey: 'I', principalPartLabel: 'I / III', primarySuffix: '-εσθαι', plateLines: ['Pr.} -εσθαι', 'Ao.} -ασθαι (-έσθαι)', 'Pf.} V + -σθαι'], expandedEndings: ['Pres. (I): -εσθαι', 'Aor. 1º: -ασθαι · Aor. 2º: -έσθαι', 'Perf. M/P (V): -σθαι'] },
+          passive: { slotKey: 'infinitives', voice: 'passive', requiredStemKey: 'VI', principalPartLabel: 'VI', primarySuffix: '-ῆναι', plateLines: ['Ao.} -ῆναι', 'Ft.} -ήσεσθαι', 'Pr.} I + -εσθαι'], expandedEndings: ['Aor. Pass. (VI): -ῆναι', 'Fut. Pass. (VI): -ήσεσθαι', 'Pres. Pass. (I): -εσθαι'] }
+        },
+        subjunctives: {
+          active: { slotKey: 'subjunctives', voice: 'active', requiredStemKey: 'I', principalPartLabel: 'I / III', primarySuffix: '-ω', plateLines: ['1.} -ω, -ωμεν', '2.} -ῃς, -ητε', '3.} -ῃ, -ωσι(ν)'], expandedEndings: ['Barítonos: -ω, -ῃς, -ῃ, -ωμεν, -ητε, -ωσι(ν)', 'Contratos (I): -ῶ, -ᾷς/-ῇς/-οῖς, -ᾷ/-ῇ/-οῖ, -ῶμεν, -ᾶτε/-ῆτε/-ῶτε, -ῶσι(ν)'], philologicalNote: 'Vogal temática alongada (-ω/-η-).' },
+          middle: { slotKey: 'subjunctives', voice: 'middle', requiredStemKey: 'I', principalPartLabel: 'I / III', primarySuffix: '-ωμαι', plateLines: ['1.} -ωμαι, -ώμεθα', '2.} -ῃ, -ησθε', '3.} -ηται, -ωνται'], expandedEndings: ['Barítonos: -ωμαι, -ῃ, -ηται, -ώμεθα, -ησθε, -ωνται', 'Contratos (I): -ῶμαι, -ᾷ/-ῇ/-οῖ, -ᾶται/-ῆται/-ῶται'] },
+          passive: { slotKey: 'subjunctives', voice: 'passive', requiredStemKey: 'VI', principalPartLabel: 'VI', primarySuffix: '-ῶ', plateLines: ['1.} -ῶ, -ῶμεν', '2.} -ῇς, -ῆτε', '3.} -ῇ, -ῶσι(ν)'], expandedEndings: ['1ª sg: -ῶ · 2ª sg: -ῇς · 3ª sg: -ῇ · 1ª pl: -ῶμεν · 2ª pl: -ῆτε · 3ª pl: -ῶσι(ν)'] }
+        },
+        optatives: {
+          active: { slotKey: 'optatives', voice: 'active', requiredStemKey: 'III', principalPartLabel: 'III', primarySuffix: '-αιμι (-οιμι)', plateLines: ['1.} -αιμι (-οιμι)', '2.} -αις (-οις)', '3.} -αι (-οι)'], expandedEndings: ['Aor. 1º (III): -αιμι, -αις, -αι, -αιμεν, -αιτε, -αιεν', 'Pres. (I) & 2º Aor. (III): -οιμι, -οις, -οι'] },
+          middle: { slotKey: 'optatives', voice: 'middle', requiredStemKey: 'III', principalPartLabel: 'III', primarySuffix: '-αίμην (-οίμην)', plateLines: ['1.} -αίμην (-οίμην)', '2.} -αιο (-οιο)', '3.} -αιτο (-οιτο)'], expandedEndings: ['Aor. 1º (III): -αίμην, -αιο, -αιτο', 'Pres. (I) & 2º Aor. (III): -οίμην, -οιο, -οιτο'] },
+          passive: { slotKey: 'optatives', voice: 'passive', requiredStemKey: 'VI', principalPartLabel: 'VI', primarySuffix: '-είην', plateLines: ['1.} -είην, -εῖμεν', '2.} -είης, -εῖτε', '3.} -είη, -εῖεν'], expandedEndings: ['1ª sg: -είην · 2ª sg: -είης · 3ª sg: -είη · 1ª pl: -εῖμεν · 2ª pl: -εῖτε · 3ª pl: -εῖεν'] }
+        },
+        imperatives: {
+          active: { slotKey: 'imperatives', voice: 'active', requiredStemKey: 'I', principalPartLabel: 'I / III', primarySuffix: '-ε', plateLines: ['2.} -ε, -ετε', '3.} -έτω, -όντων', 'Ao.} -ον, -άτω'], expandedEndings: ['Pres. (I) & 2º Aor.: 2ª sg -ε, 3ª sg -έτω, 2ª pl -ετε, 3ª pl -όντων', '1º Aor. (III): 2ª sg -ον, 3ª sg -άτω, 2ª pl -ατε, 3ª pl -άντων'] },
+          middle: { slotKey: 'imperatives', voice: 'middle', requiredStemKey: 'I', principalPartLabel: 'I / III', primarySuffix: '-ου', plateLines: ['2.} -ου, -εσθε', '3.} -έσθω, -έσθων', 'Ao.} -αι (-οῦ)'], expandedEndings: ['Pres. (I): 2ª sg -ου, 3ª sg -έσθω, 2ª pl -εσθε, 3ª pl -έσθων', '1º Aor. (III): 2ª sg -αι, 3ª sg -άσθω, 2ª pl -ασθε, 3ª pl -άσθων'] },
+          passive: { slotKey: 'imperatives', voice: 'passive', requiredStemKey: 'VI', principalPartLabel: 'VI', primarySuffix: '-ητι (-ηθι)', plateLines: ['2.} -ητι / -ηθι', '3.} -ήτω, -έντων', '2p.} -ητε'], expandedEndings: ['Aor. Pass. (VI): 2ª sg -ητι ou -ηθι, 3ª sg -ήτω, 2ª pl -ητε, 3ª pl -έντων'], philologicalNote: 'Lei de Grassmann (dissimilação de aspiradas) aplicada no 1º Aoristo.' }
+        },
+        participles_impf_aor: {
+          active: { slotKey: 'participles_impf_aor', voice: 'active', requiredStemKey: 'I', principalPartLabel: 'I', primarySuffix: '-ων', plateLines: ['M.} -ων, -οντος', 'F.} -ουσα, -ούσης', 'N.} -ον, -οντος'], expandedEndings: ['Barítonos: Masc. -ων (-οντος) · Fem. -ουσα · Neut. -ον'] },
+          middle: { slotKey: 'participles_impf_aor', voice: 'middle', requiredStemKey: 'I', principalPartLabel: 'I', primarySuffix: '-όμενος', plateLines: ['M.} -όμενος', 'F.} -ομένη', 'N.} -όμενον'], expandedEndings: ['Barítonos: -όμενος, -ομένη, -όμενον'] },
+          passive: { slotKey: 'participles_impf_aor', voice: 'passive', requiredStemKey: 'I', principalPartLabel: 'I', primarySuffix: '-όμενος', plateLines: ['M.} -όμενος', 'F.} -ομένη', 'N.} -όμενον'], expandedEndings: ['Barítonos: -όμενος, -ομένη, -όμενον'] }
+        },
+        participles_fut_perf: {
+          active: { slotKey: 'participles_fut_perf', voice: 'active', requiredStemKey: 'III', principalPartLabel: 'III', primarySuffix: '-ας (-ών)', plateLines: ['M.} -ας (-ών)', 'F.} -ασα (-οῦσα)', 'N.} -αν (-όν)'], expandedEndings: ['Aor. 1º (III): -ας, -ασα, -αν · Aor. 2º (III): -ών, -οῦσα, -όν', 'Perf. At. (IV): -ώς, -υῖα, -ός'] },
+          middle: { slotKey: 'participles_fut_perf', voice: 'middle', requiredStemKey: 'III', principalPartLabel: 'III', primarySuffix: '-άμενος', plateLines: ['M.} -άμενος (-όμ.)', 'F.} -αμένη (-ομ.)', 'Pf.} V + -μένος'], expandedEndings: ['Aor. Méd. (III): -άμενος, -η, -ον', 'Perf. Méd. (V): -μένος, -μένη, -μένον'] },
+          passive: { slotKey: 'participles_fut_perf', voice: 'passive', requiredStemKey: 'VI', principalPartLabel: 'VI', primarySuffix: '-είς', plateLines: ['M.} -είς, -έντος', 'F.} -εῖσα, -είσης', 'N.} -έν (V -μένος)'], expandedEndings: ['Aor. Pass. (VI): -είς, -εῖσα, -έν', 'Perf. Pass. (V): -μένος, -μένη, -μένον'] }
+        }
+      };
+
+      var HUEBER_MI_DESINENCE_PLATES = {
+        pres_ind: {
+          active: { slotKey: 'pres_ind', voice: 'active', requiredStemKey: 'I', principalPartLabel: 'I', primarySuffix: '-μι', plateLines: ['1.} -μι, -μεν', '2.} -ς, -τε', '3.} -σι(ν), -ᾶσι(ν)'], expandedEndings: ['Singular (longo η/ω/η/η): 1ª -μι · 2ª -ς · 3ª -σι(ν)', 'Plural (breve ε/ο/α/ε): 1ª -μεν · 2ª -τε · 3ª -ᾶσι(ν)'] },
+          middle: { slotKey: 'pres_ind', voice: 'middle', requiredStemKey: 'I', principalPartLabel: 'I', primarySuffix: '-μαι', plateLines: ['1.} -μαι, -μεθα', '2.} -σαι, -σθε', '3.} -ται, -νται'], expandedEndings: ['Atemático direto sobre Tema I breve: -μαι, -σαι, -ται, -μεθα, -σθε, -νται'] },
+          passive: { slotKey: 'pres_ind', voice: 'passive', requiredStemKey: 'I', principalPartLabel: 'I', primarySuffix: '-μαι', plateLines: ['1.} -μαι, -μεθα', '2.} -σαι, -σθε', '3.} -ται, -νται'], expandedEndings: ['Atemático direto sobre Tema I breve: -μαι, -σαι, -ται, -μεθα, -σθε, -νται'] }
+        },
+        impf_ind: {
+          active: { slotKey: 'impf_ind', voice: 'active', requiredStemKey: 'I_aug', principalPartLabel: 'I', primarySuffix: '-ν', plateLines: ['1.} -ν, -μεν', '2.} -ς, -τε', '3.} -(ν), -σαν'], expandedEndings: ['Singular: ἐτίθην, -εις, -ει · ἵστην, -ης, -η', 'Plural (breve): ἐτίθε-μεν, -τε, -σαν · ἵστα-μεν'] },
+          middle: { slotKey: 'impf_ind', voice: 'middle', requiredStemKey: 'I_aug', principalPartLabel: 'I', primarySuffix: '-μην', plateLines: ['1.} -μην, -μεθα', '2.} -σο, -σθε', '3.} -το, -ντο'], expandedEndings: ['Atemático secundário: -μην, -σο, -το, -μεθα, -σθε, -ντο'] },
+          passive: { slotKey: 'impf_ind', voice: 'passive', requiredStemKey: 'I_aug', principalPartLabel: 'I', primarySuffix: '-μην', plateLines: ['1.} -μην, -μεθα', '2.} -σο, -σθε', '3.} -το, -ντο'], expandedEndings: ['Atemático secundário: -μην, -σο, -το, -μεθα, -σθε, -ντο'] }
+        },
+        fut_ind: {
+          active: { slotKey: 'fut_ind', voice: 'active', requiredStemKey: 'II', principalPartLabel: 'II', primarySuffix: '-ω', plateLines: ['1.} -ω, -ομεν', '2.} -εις, -ετε', '3.} -ει, -ουσι(ν)'], expandedEndings: ['Futuro sigmático temático sobre Tema II longo: θήσ-ω, δώσ-ω, στήσ-ω, ἥσ-ω'] },
+          middle: { slotKey: 'fut_ind', voice: 'middle', requiredStemKey: 'II', principalPartLabel: 'II', primarySuffix: '-ομαι', plateLines: ['1.} -ομαι, -όμεθα', '2.} -ῃ, -εσθε', '3.} -εται, -ονται'], expandedEndings: ['Futuro Médio sobre Tema II: θήσ-ομαι, δώσ-ομαι'] },
+          passive: { slotKey: 'fut_ind', voice: 'passive', requiredStemKey: 'VI', principalPartLabel: 'VI', primarySuffix: '-ήσομαι', plateLines: ['1.} -ήσομαι', '2.} -ήσῃ, -ήσεσθε', '3.} -ήσεται, -ονται'], expandedEndings: ['Futuro Passivo sobre Tema VI: τεθ-ήσομαι, δοθ-ήσομαι'] }
+        },
+        aor_ind: {
+          active: { slotKey: 'aor_ind', voice: 'active', requiredStemKey: 'III_aug', principalPartLabel: 'III', primarySuffix: '-α / -ν', plateLines: ['Sg.} -α (-ν, -ς)', 'Pl.} III + -μεν, -τε', '3p.} -σαν (-αν)'], expandedEndings: ['Aoristo em -κ- no sg: ἔθηκ-α, ἔδωκ-α · Plural radical: ἔθε-μεν, ἔδο-μεν', 'ἵστημι: 2º Aor. intr. ἔστη-ν'] },
+          middle: { slotKey: 'aor_ind', voice: 'middle', requiredStemKey: 'III_mid_aug', principalPartLabel: 'III', primarySuffix: '-μην', plateLines: ['1.} -μην, -μεθα', '2.} -ου (-ω), -σθε', '3.} -το, -ντο'], expandedEndings: ['Aoristo Radical Médio: ἐθέ-μην (ἔθου), ἐδό-μην (ἔδου)'] },
+          passive: { slotKey: 'aor_ind', voice: 'passive', requiredStemKey: 'VI_aug', principalPartLabel: 'VI', primarySuffix: '-ην', plateLines: ['1.} -ην, -ημεν', '2.} -ης, -ητε', '3.} -η, -ησαν'], expandedEndings: ['Aoristo Passivo sobre Tema VI aumentado: ἐτέθ-ην, ἐδόθ-ην'] }
+        },
+        perf_ind: HUEBER_DESINENCE_PLATES.perf_ind,
+        plup_ind: HUEBER_DESINENCE_PLATES.plup_ind,
+        infinitives: {
+          active: { slotKey: 'infinitives', voice: 'active', requiredStemKey: 'I', principalPartLabel: 'I / III', primarySuffix: '-ναι', plateLines: ['Pr.} -ναι', 'Ao.} III + -ναι', 'Pf.} IV + -έναι'], expandedEndings: ['Pres. At. (I breve + -ναι): τιθέ-ναι, διδό-ναι', 'Aor. Radical At. (III + -εναι contraído): θεῖναι, δοῦναι'] },
+          middle: { slotKey: 'infinitives', voice: 'middle', requiredStemKey: 'I', principalPartLabel: 'I / III', primarySuffix: '-σθαι', plateLines: ['Pr.} -σθαι', 'Ao.} III + -σθαι', 'Pf.} V + -σθαι'], expandedEndings: ['Pres. Méd. (I): τίθε-σθαι, δίδο-σθαι', 'Aor. Méd. (III): θέ-σθαι, δό-σθαι'] },
+          passive: { slotKey: 'infinitives', voice: 'passive', requiredStemKey: 'VI', principalPartLabel: 'VI', primarySuffix: '-ῆναι', plateLines: ['Ao.} -ῆναι', 'Ft.} -ήσεσθαι', 'Pr.} I + -σθαι'], expandedEndings: ['Aor. Pass. (VI): τεθ-ῆναι, δοθ-ῆναι'] }
+        },
+        subjunctives: {
+          active: { slotKey: 'subjunctives', voice: 'active', requiredStemKey: 'I', principalPartLabel: 'I / III', primarySuffix: '-ῶ', plateLines: ['1.} -ῶ, -ῶμεν', '2.} -ῇς (-ῷς), -ῆτε', '3.} -ῇ (-ῷ), -ῶσι'], expandedEndings: ['Pres. (I) / Aor. (III) contraídos: τιθῶ / θῶ · διδῶ / δῶ'] },
+          middle: { slotKey: 'subjunctives', voice: 'middle', requiredStemKey: 'I', principalPartLabel: 'I / III', primarySuffix: '-ῶμαι', plateLines: ['1.} -ῶμαι, -ώμεθα', '2.} -ῇ (-ῷ), -ῆσθε', '3.} -ῆται (-ῶται)'], expandedEndings: ['Pres. (I) / Aor. (III): τιθῶμαι / θῶμαι · διδῶμαι / δῶμαι'] },
+          passive: HUEBER_DESINENCE_PLATES.subjunctives.passive
+        },
+        optatives: {
+          active: { slotKey: 'optatives', voice: 'active', requiredStemKey: 'III', principalPartLabel: 'III', primarySuffix: '-ίην', plateLines: ['1.} -ίην, -ῖμεν', '2.} -ίης, -ῖτε', '3.} -ίη, -ῖεν'], expandedEndings: ['Aor. Radical (III + -ιη-/-ι-): θείην, δοίην'] },
+          middle: { slotKey: 'optatives', voice: 'middle', requiredStemKey: 'III', principalPartLabel: 'III', primarySuffix: '-ίμην', plateLines: ['1.} -ίμην, -ίμεθα', '2.} -ῖο, -ῖσθε', '3.} -ῖτο, -ῖντο'], expandedEndings: ['Aor. Radical Méd. (III + -ι-): θείμην (θεῖο, θεῖτο)'] },
+          passive: HUEBER_DESINENCE_PLATES.optatives.passive
+        },
+        imperatives: {
+          active: { slotKey: 'imperatives', voice: 'active', requiredStemKey: 'I', principalPartLabel: 'I / III', primarySuffix: '-ει/-ου/-η', plateLines: ['Pr.} -ει/-ου/-η, -τε', 'Ao.} III + -ς (-θι)', '3s.} -τω, -ντων'], expandedEndings: ['Pres. 2ª sg: τίθει, δίδου, ἵστη', 'Aor. Radical 2ª sg: θές, δός, στῆθι'] },
+          middle: { slotKey: 'imperatives', voice: 'middle', requiredStemKey: 'I', principalPartLabel: 'I / III', primarySuffix: '-σο', plateLines: ['Pr.} -σο, -σθε', '3s.} -σθω, -σθων', 'Ao.} III + -οῦ'], expandedEndings: ['Pres. Méd. 2ª sg: τίθε-σο, δίδο-σο', 'Aor. Méd. 2ª sg: θοῦ (< *θέ-σο), δοῦ'] },
+          passive: HUEBER_DESINENCE_PLATES.imperatives.passive
+        },
+        participles_impf_aor: {
+          active: { slotKey: 'participles_impf_aor', voice: 'active', requiredStemKey: 'I', principalPartLabel: 'I', primarySuffix: '-ς', plateLines: ['M.} -ς (-ντος)', 'F.} -σα (-σης)', 'N.} -ν (-ντος)'], expandedEndings: ['Pres. At. sobre Tema I: τιθείς, διδούς'] },
+          middle: { slotKey: 'participles_impf_aor', voice: 'middle', requiredStemKey: 'I', principalPartLabel: 'I', primarySuffix: '-μενος', plateLines: ['M.} -μενος', 'F.} -μένη', 'N.} -μενον'], expandedEndings: ['Atemático direto sobre Tema I: τιθέ-μενος, διδό-μενος'] },
+          passive: { slotKey: 'participles_impf_aor', voice: 'passive', requiredStemKey: 'I', principalPartLabel: 'I', primarySuffix: '-μενος', plateLines: ['M.} -μενος', 'F.} -μένη', 'N.} -μενον'], expandedEndings: ['Atemático direto sobre Tema I: τιθέ-μενος, διδό-μενος'] }
+        },
+        participles_fut_perf: {
+          active: { slotKey: 'participles_fut_perf', voice: 'active', requiredStemKey: 'III', principalPartLabel: 'III', primarySuffix: '-ς', plateLines: ['M.} -ς (-ντος)', 'F.} -σα (-σης)', 'N.} -ν (-ντος)'], expandedEndings: ['Aor. Radical At. (III): θείς, δούς', 'Perf. At. (IV): τεθεικώς, δεδωκώς'] },
+          middle: { slotKey: 'participles_fut_perf', voice: 'middle', requiredStemKey: 'III', principalPartLabel: 'III', primarySuffix: '-μενος', plateLines: ['M.} -μενος', 'F.} -μένη', 'Pf.} V + -μένος'], expandedEndings: ['Aor. Radical Méd. (III): θέ-μενος, δό-μενος', 'Perf. Méd. (V): τεθει-μένος'] },
+          passive: HUEBER_DESINENCE_PLATES.participles_fut_perf.passive
+        }
+      };
+
+      /* =========================================================================
+         3. VERBOS DISCO 1
+         ========================================================================= */
+      var INITIAL_DECKS = {
+        omega_barytone: [
+          { id: 'luo', lemma: 'λύω', gloss: 'desatar, libertar', conjugationSystem: 'omega', stems: { I: 'λυ', II: 'λυσ', III: 'λυσ', IV: 'λελυκ', V: 'λελυ', VI: 'λυθ' }, augmentedStems: { I_aug: 'ἐλυ', III_aug: 'ἐλυσ', IV_aug: 'ἐλελυκ', V_aug: 'ἐλελυ', VI_aug: 'ἐλυθ' }, augmentLabel: 'ἐ- (silábico)', aoristVariant: 'sigmatic', stemVConsonant: 'vowel' },
+          { id: 'paideuo', lemma: 'παιδεύω', gloss: 'educar, instruir', conjugationSystem: 'omega', stems: { I: 'παιδευ', II: 'παιδευσ', III: 'παιδευσ', IV: 'πεπαιδευκ', V: 'πεπαιδευ', VI: 'παιδευθ' }, augmentedStems: { I_aug: 'ἐπαιδευ', III_aug: 'ἐπαιδευσ', IV_aug: 'ἐπεπαιδευκ', V_aug: 'ἐπεπαιδευ', VI_aug: 'ἐπαιδευθ' }, augmentLabel: 'ἐ- (silábico)', aoristVariant: 'sigmatic', stemVConsonant: 'vowel' },
+          { id: 'leipo', lemma: 'λείπω', gloss: 'deixar, abandonar', conjugationSystem: 'omega', stems: { I: 'λειπ', II: 'λειψ', III: 'λιπ', IV: 'λελοιπ', V: 'λελειπ', VI: 'λειφθ' }, augmentedStems: { I_aug: 'ἐλειπ', III_aug: 'ἐλιπ', IV_aug: 'ἐλελοιπ', V_aug: 'ἐλελειπ', VI_aug: 'ἐλειφθ' }, augmentLabel: 'ἐ- (2º Aor)', aoristVariant: 'thematic', stemVConsonant: 'labial' },
+          { id: 'ago', lemma: 'ἄγω', gloss: 'conduzir, guiar', conjugationSystem: 'omega', stems: { I: 'ἀγ', II: 'ἀξ', III: 'ἀγαγ', IV: 'ἠχ', V: 'ἠγ', VI: 'ἀχθ' }, augmentedStems: { I_aug: 'ἠγ', III_aug: 'ἠγαγ', IV_aug: 'ἠχ', V_aug: 'ἠγ', VI_aug: 'ἠχθ' }, augmentLabel: 'ἠ- (quantitativo)', aoristVariant: 'thematic', stemVConsonant: 'velar' }
+        ],
+        omega_contract: [
+          { id: 'timao', lemma: 'τιμάω', gloss: 'honrar, estimar', conjugationSystem: 'omega', contractVowel: 'alpha', stems: { I: 'τιμα', II: 'τιμησ', III: 'τιμησ', IV: 'τετιμηκ', V: 'τετιμη', VI: 'τιμηθ' }, augmentedStems: { I_aug: 'ἐτιμα', III_aug: 'ἐτιμησ', IV_aug: 'ἐτετιμηκ', V_aug: 'ἐτετιμη', VI_aug: 'ἐτιμηθ' }, augmentLabel: 'ἐ-', aoristVariant: 'sigmatic', stemVConsonant: 'vowel' },
+          { id: 'poieo', lemma: 'ποιέω', gloss: 'fazer, produzir', conjugationSystem: 'omega', contractVowel: 'epsilon', stems: { I: 'ποιε', II: 'ποιησ', III: 'ποιησ', IV: 'πεποιηκ', V: 'πεποιη', VI: 'ποιηθ' }, augmentedStems: { I_aug: 'ἐποιε', III_aug: 'ἐποιησ', IV_aug: 'ἐπεποιηκ', V_aug: 'ἐπεποιη', VI_aug: 'ἐποιηθ' }, augmentLabel: 'ἐ-', aoristVariant: 'sigmatic', stemVConsonant: 'vowel' },
+          { id: 'deloo', lemma: 'δηλόω', gloss: 'mostrar, revelar', conjugationSystem: 'omega', contractVowel: 'omicron', stems: { I: 'δηλο', II: 'δηλωσ', III: 'δηλωσ', IV: 'δεδηλωκ', V: 'δεδηλω', VI: 'δηλωθ' }, augmentedStems: { I_aug: 'ἐδηλο', III_aug: 'ἐδηλωσ', IV_aug: 'ἐδεδηλωκ', V_aug: 'ἐδεδηλω', VI_aug: 'ἐδηλωθ' }, augmentLabel: 'ἐ-', aoristVariant: 'sigmatic', stemVConsonant: 'vowel' },
+          { id: 'phaino', lemma: 'φαίνω', gloss: 'mostrar (líquido -ν-)', conjugationSystem: 'omega', stems: { I: 'φαιν', II: 'φαν', III: 'φην', IV: 'πεφαγκ', V: 'πεφασ', VI: 'φαν' }, augmentedStems: { I_aug: 'ἐφαιν', III_aug: 'ἐφην', IV_aug: 'ἐπεφαγκ', V_aug: 'ἐπεφασ', VI_aug: 'ἐφαν' }, augmentLabel: 'ἐ-', aoristVariant: 'sigmatic', stemVConsonant: 'liquid' }
+        ],
+        mi_athematic: [
+          { id: 'tithemi', lemma: 'τίθημι', gloss: 'pôr, colocar', conjugationSystem: 'mi', stems: { I: 'τιθε', II: 'θησ', III: 'θε', IV: 'τεθεικ', V: 'τεθει', VI: 'τεθ' }, augmentedStems: { I_aug: 'ἐτιθε', III_aug: 'ἐθηκ', III_mid_aug: 'ἐθε', IV_aug: 'ἐτεθεικ', V_aug: 'ἐτεθει', VI_aug: 'ἐτεθ' }, augmentLabel: 'Red. τι-', aoristVariant: 'athematic_kappa', stemVConsonant: 'vowel' },
+          { id: 'didomi', lemma: 'δίδωμι', gloss: 'dar, conceder', conjugationSystem: 'mi', stems: { I: 'διδο', II: 'δωσ', III: 'δο', IV: 'δεδωκ', V: 'δεδο', VI: 'δοθ' }, augmentedStems: { I_aug: 'ἐδιδο', III_aug: 'ἐδωκ', III_mid_aug: 'ἐδο', IV_aug: 'ἐδεδωκ', V_aug: 'ἐδεδο', VI_aug: 'ἐδοθ' }, augmentLabel: 'Red. δι-', aoristVariant: 'athematic_kappa', stemVConsonant: 'vowel' },
+          { id: 'histemi', lemma: 'ἵστημι', gloss: 'erguer-se', conjugationSystem: 'mi', stems: { I: 'ἱστα', II: 'στησ', III: 'στα', IV: 'ἑστηκ', V: 'ἑστα', VI: 'σταθ' }, augmentedStems: { I_aug: 'ἱστα', III_aug: 'ἐστη', III_mid_aug: 'ἐστησα', IV_aug: 'εἱστηκ', V_aug: 'εἱστα', VI_aug: 'ἐσταθ' }, augmentLabel: 'Red. ἱστα-', aoristVariant: 'athematic_kappa', stemVConsonant: 'vowel' },
+          { id: 'hiemi', lemma: 'ἵημι', gloss: 'lançar', conjugationSystem: 'mi', stems: { I: 'ἱε', II: 'ἡσ', III: 'ἑ', IV: 'εἱκ', V: 'εἱ', VI: 'ἑθ' }, augmentedStems: { I_aug: 'ἱε', III_aug: 'ἡκ', III_mid_aug: 'εἱ', IV_aug: 'εἱκ', V_aug: 'εἱ', VI_aug: 'εἱθ' }, augmentLabel: 'Red. ἱε-', aoristVariant: 'athematic_kappa', stemVConsonant: 'vowel' }
+        ]
+      };
+
+      var EXTRA_PRESET_VERBS = [
+        { id: 'grapho', lemma: 'γράφω', gloss: 'escrever', conjugationSystem: 'omega', stems: { I: 'γραφ', II: 'γραψ', III: 'γραψ', IV: 'γεγραφ', V: 'γεγραφ', VI: 'γραφ' }, augmentedStems: { I_aug: 'ἐγραφ', III_aug: 'ἐγραψ', IV_aug: 'ἐγεγραφ', V_aug: 'ἐγεγραφ', VI_aug: 'ἐγραφ' }, augmentLabel: 'ἐ-', aoristVariant: 'sigmatic', stemVConsonant: 'labial' },
+        { id: 'peitho', lemma: 'πείθω', gloss: 'persuadir', conjugationSystem: 'omega', stems: { I: 'πειθ', II: 'πεισ', III: 'πεισ', IV: 'πεπεικ', V: 'πεπεισ', VI: 'πεισθ' }, augmentedStems: { I_aug: 'ἐπειθ', III_aug: 'ἐπεισ', IV_aug: 'ἐπεπεικ', V_aug: 'ἐπεπεισ', VI_aug: 'ἐπεισθ' }, augmentLabel: 'ἐ-', aoristVariant: 'sigmatic', stemVConsonant: 'dental' },
+        { id: 'pauo', lemma: 'παύω', gloss: 'cessar', conjugationSystem: 'omega', stems: { I: 'παυ', II: 'παυσ', III: 'παυσ', IV: 'πεπαυκ', V: 'πεπαυ', VI: 'παυθ' }, augmentedStems: { I_aug: 'ἐπαυ', III_aug: 'ἐπαυσ', IV_aug: 'ἐπεπαυκ', V_aug: 'ἐπεπαυ', VI_aug: 'ἐπαυθ' }, augmentLabel: 'ἐ-', aoristVariant: 'sigmatic', stemVConsonant: 'vowel' },
+        { id: 'deiknumi', lemma: 'δείκνυμι', gloss: 'mostrar', conjugationSystem: 'mi', stems: { I: 'δεικνυ', II: 'δειξ', III: 'δειξ', IV: 'δεδειχ', V: 'δεδειγ', VI: 'δειχθ' }, augmentedStems: { I_aug: 'ἐδεικνυ', III_aug: 'ἐδειξ', III_mid_aug: 'ἐδειξα', IV_aug: 'ἐδεδειχ', V_aug: 'ἐδεδειγ', VI_aug: 'ἐδειχθ' }, augmentLabel: 'Sufixo -νυ-', aoristVariant: 'sigmatic', stemVConsonant: 'velar' }
+      ];
+
+      var DEFAULT_WINDOWS = [
+        { id: 'w1', slotKey: 'pres_ind', name: 'I. Presente Ind.', greekSubtitle: 'Ἐνεστὼς Ὁριστικῆς', hemisphere: 'primary_axis', x: 30, y: -309, stemWidth: 41, desinenceWidth: 57, height: 28 },
+        { id: 'w2', slotKey: 'impf_ind', name: 'Imperfeito Ind.', greekSubtitle: 'Παρατατικός', hemisphere: 'imperfective_left', x: -245, y: -143, stemWidth: 43, desinenceWidth: 59, height: 28 },
+        { id: 'w3', slotKey: 'fut_ind', name: 'II/VI. Futuro Ind.', greekSubtitle: 'Μέλλων', hemisphere: 'perfective_right', x: 151, y: -197, stemWidth: 43, desinenceWidth: 59, height: 28 },
+        { id: 'w4', slotKey: 'aor_ind', name: 'III/VI. Aoristo Ind.', greekSubtitle: 'Ἀόριστος', hemisphere: 'imperfective_left', x: -120, y: -96, stemWidth: 43, desinenceWidth: 59, height: 28 },
+        { id: 'w5', slotKey: 'perf_ind', name: 'IV/V. Perfeito Ind.', greekSubtitle: 'Παρακείμενος', hemisphere: 'perfective_right', x: 128, y: -70, stemWidth: 43, desinenceWidth: 59, height: 28 },
+        { id: 'w11', slotKey: 'participles_impf_aor', name: 'Particípio Pres. (I)', greekSubtitle: 'Μετοχὴ Ἐνεστῶτος', hemisphere: 'peripheral_orbit', x: -247, y: -11, stemWidth: 43, desinenceWidth: 59, height: 28 },
+        { id: 'w12', slotKey: 'participles_fut_perf', name: 'Particípio Aor. (III/VI)', greekSubtitle: 'Μετοχὴ Ἀορίστου', hemisphere: 'peripheral_orbit', x: 257, y: 8, stemWidth: 43, desinenceWidth: 59, height: 28 },
+        { id: 'w6', slotKey: 'plup_ind', name: 'Mais-que-Perfeito', greekSubtitle: 'Ὑπερσυντέλικος', hemisphere: 'imperfective_left', x: -145, y: 90, stemWidth: 43, desinenceWidth: 59, height: 28 },
+        { id: 'w7', slotKey: 'infinitives', name: 'Infinitivos', greekSubtitle: 'Ἀπαρέμφατα', hemisphere: 'perfective_right', x: 132, y: 106, stemWidth: 43, desinenceWidth: 59, height: 28 },
+        { id: 'w8', slotKey: 'subjunctives', name: 'Subjuntivo (I/VI)', greekSubtitle: 'Ὑποτακτική', hemisphere: 'oblique_lower', x: -126, y: 236, stemWidth: 43, desinenceWidth: 59, height: 28 },
+        { id: 'w9', slotKey: 'optatives', name: 'Optativo (III/VI)', greekSubtitle: 'Εὐκτική', hemisphere: 'oblique_lower', x: 150, y: 217, stemWidth: 43, desinenceWidth: 59, height: 28 },
+        { id: 'w10', slotKey: 'imperatives', name: 'Imperativo (I/VI)', greekSubtitle: 'Προστακτική', hemisphere: 'oblique_lower', x: -44, y: 322, stemWidth: 41, desinenceWidth: 57, height: 28 }
+      ];
+
+      var SLOT_OPTIONS = [
+        { value: 'pres_ind', label: 'Presente do Indicativo (Tema I)' },
+        { value: 'impf_ind', label: 'Imperfeito do Indicativo (Tema I_aug)' },
+        { value: 'fut_ind', label: 'Futuro do Indicativo (Tema II / VI)' },
+        { value: 'aor_ind', label: 'Aoristo do Indicativo (Tema III_aug / VI_aug)' },
+        { value: 'perf_ind', label: 'Perfeito do Indicativo (Tema IV / V)' },
+        { value: 'plup_ind', label: 'Mais-que-Perfeito Ind. (Tema IV_aug / V_aug)' },
+        { value: 'infinitives', label: 'Infinitivos (Tema I / VI)' },
+        { value: 'subjunctives', label: 'Subjuntivo (Tema I / VI)' },
+        { value: 'optatives', label: 'Optativo (Tema III / VI)' },
+        { value: 'imperatives', label: 'Imperativo (Tema I / VI)' },
+        { value: 'participles_impf_aor', label: 'Particípio Presente (Tema I)' },
+        { value: 'participles_fut_perf', label: 'Particípio Aoristo (Tema III / VI)' }
+      ];
+
+      var SCALE_PRESETS = {
+        a4_optimal: {
+          id: 'a4_optimal',
+          label: 'A4 (Ø 188 / 173 / 161 mm)',
+          svgAttrMm: '193.6mm',
+          mmPerUnit: 0.22,
+          disc1DiamMm: '188,3 mm',
+          disc2DiamMm: '172,5 mm',
+          disc3DiamMm: '161,0 mm',
+          pageW: '210mm',
+          pageH: '297mm',
+          marginNote: 'Para papel A4.'
+        },
+        a3_optimal: {
+          id: 'a3_optimal',
+          label: 'A3 Máximo (Ø 274 / 251 / 234 mm)',
+          svgAttrMm: '280mm',
+          mmPerUnit: 0.32,
+          disc1DiamMm: '274,0 mm',
+          disc2DiamMm: '251,0 mm',
+          disc3DiamMm: '234,0 mm',
+          pageW: '297mm',
+          pageH: '420mm',
+          marginNote: 'Para papel A3.'
+        }
+      };
+
+      /* =========================================================================
+         4. MOTOR MATEMÁTICO E FILOLÓGICO PURO
+         ========================================================================= */
+      function deepClone(obj) { return JSON.parse(JSON.stringify(obj)); }
+
+      function escHtml(str) {
+        return String(str == null ? '' : str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+      }
+
+      function getDesinencePlatesForSystem(system) {
+        return system === 'mi' ? HUEBER_MI_DESINENCE_PLATES : HUEBER_DESINENCE_PLATES;
+      }
+
+      function resolveIsolatedStem(verb, stemKey) {
+        if (['I', 'II', 'III', 'IV', 'V', 'VI'].includes(stemKey)) return verb.stems[stemKey] || '';
+        if (stemKey === 'III_mid_aug') return verb.augmentedStems.III_mid_aug || verb.augmentedStems.III_aug || '';
+        return verb.augmentedStems[stemKey] || '';
+      }
+
+      function buildAtticSynthesisNote(verb, voice, slotKey, system, stemKey) {
+        if (verb.contractVowel && (stemKey === 'I' || stemKey === 'I_aug')) {
+          var baseRoot = verb.stems.I.slice(0, -1);
+          var augBase = verb.augmentedStems.I_aug.slice(0, -1);
+          if (verb.contractVowel === 'alpha') {
+            if (slotKey === 'pres_ind') return voice === 'active' ? 'Contração Ática: ' + baseRoot + 'ῶ, ' + baseRoot + 'ᾷς, ' + baseRoot + 'ᾷ' : 'Contração Ática: ' + baseRoot + 'ῶμαι, ' + baseRoot + 'ᾷ, ' + baseRoot + 'ᾶται';
+            if (slotKey === 'impf_ind') return voice === 'active' ? 'Contração Ática: ' + augBase + 'ων, ' + augBase + 'ας, ' + augBase + 'α' : 'Contração Ática: ' + augBase + 'ώμην, ' + augBase + 'ῶ, ' + augBase + 'ᾶτο';
+            return 'Contração vocálica ática no Infectum: α + ο/ω > ω · α + ε/η > ᾱ';
+          }
+          if (verb.contractVowel === 'epsilon') {
+            if (slotKey === 'pres_ind') return voice === 'active' ? 'Contração Ática: ' + baseRoot + 'ῶ, ' + baseRoot + 'εῖς, ' + baseRoot + 'εῖ' : 'Contração Ática: ' + baseRoot + 'οῦμαι, ' + baseRoot + 'ῇ, ' + baseRoot + 'εῖται';
+            if (slotKey === 'impf_ind') return voice === 'active' ? 'Contração Ática: ' + augBase + 'ουν, ' + augBase + 'εις, ' + augBase + 'ει' : 'Contração Ática: ' + augBase + 'ούμην, ' + augBase + 'οῦ, ' + augBase + 'εῖτο';
+            return 'Contração vocálica ática no Infectum: ε + ω > ω · ε + ο > ου · ε + ε > ει';
+          }
+          if (verb.contractVowel === 'omicron') {
+            if (slotKey === 'pres_ind') return voice === 'active' ? 'Contração Ática: ' + baseRoot + 'ῶ, ' + baseRoot + 'οῖς, ' + baseRoot + 'οῖ' : 'Contração Ática: ' + baseRoot + 'οῦμαι, ' + baseRoot + 'οῖ, ' + baseRoot + 'οῦται';
+            if (slotKey === 'impf_ind') return voice === 'active' ? 'Contração Ática: ' + augBase + 'ουν, ' + augBase + 'ους, ' + augBase + 'ου' : 'Contração Ática: ' + augBase + 'ούμην, ' + augBase + 'οῦ, ' + augBase + 'οῦτο';
+            return 'Contração vocálica ática no Infectum: ο + ε/ο/ου > ου · ο + η/ω > ω · ο + ει/ῃ > οι';
+          }
+        }
+        if (verb.stemVConsonant === 'liquid' && slotKey === 'fut_ind' && voice !== 'passive') {
+          return voice === 'active' ? 'Futuro Líquido Contrato: ' + verb.stems.II + 'ῶ, ' + verb.stems.II + 'εῖς, ' + verb.stems.II + 'εῖ' : 'Futuro Líquido Médio Contrato: ' + verb.stems.II + 'οῦμαι, ' + verb.stems.II + 'ῇ, ' + verb.stems.II + 'εῖται';
+        }
+        return '';
+      }
+
+      function readOpticalWindow(verb, voice, slotKey, system) {
+        var sys = system || verb.conjugationSystem || 'omega';
+        var platesMap = getDesinencePlatesForSystem(sys);
+        var slotGroup = platesMap[slotKey] || platesMap.pres_ind;
+        var plate = slotGroup[voice] || slotGroup.active;
+        var isolatedStem = resolveIsolatedStem(verb, plate.requiredStemKey);
+        var atticSynthesisNote = buildAtticSynthesisNote(verb, voice, slotKey, sys, plate.requiredStemKey);
+        return { isolatedStem: isolatedStem, stemKeyUsed: plate.requiredStemKey, plate: plate, atticSynthesisNote: atticSynthesisNote };
+      }
+
+      function getPrincipalStemsSummary(verb) {
+        return [verb.stems.I + '-', verb.stems.II + '-', verb.stems.III + '-', verb.stems.IV + '-', verb.stems.V + '-', verb.stems.VI + '-'];
+      }
+
+      function computeNestedBoxMetrics(win) {
+        var totalWidth = win.stemWidth + win.desinenceWidth;
+        var seamX = (win.stemWidth - win.desinenceWidth) / 2;
+        var d3Outer = { x: -totalWidth / 2, y: -win.height / 2, width: totalWidth, height: win.height, rx: 3.2 };
+        var d2Inset = 2.0;
+        var d2Height = Math.max(12, win.height - d2Inset * 2);
+        var d2Envelope = { x: -totalWidth / 2 + d2Inset, y: -d2Height / 2, width: Math.max(28, totalWidth - d2Inset * 2), height: d2Height, rx: 1.8 };
+        var d2Cutout = { x: -totalWidth / 2 + d2Inset, y: -d2Height / 2, width: Math.max(14, win.stemWidth - d2Inset - 0.5), height: d2Height, rx: 1.5 };
+        var d2Plate = { x: seamX + 0.5, y: -d2Height / 2, width: Math.max(18, win.desinenceWidth - d2Inset - 0.5), height: d2Height, rx: 1.5 };
+        var d1InsetX = 1.6;
+        var d1InsetY = 1.5;
+        var d1Width = Math.max(11, d2Cutout.width - d1InsetX * 2);
+        var d1Height = Math.max(9, d2Cutout.height - d1InsetY * 2);
+        var d1StemCell = { x: d2Cutout.x + d1InsetX, y: -d1Height / 2, width: d1Width, height: d1Height, rx: 1.0 };
+        return { totalWidth: totalWidth, seamX: seamX, d3Outer: d3Outer, d2Envelope: d2Envelope, d2Cutout: d2Cutout, d2Plate: d2Plate, d1StemCell: d1StemCell };
+      }
+
+      function computeRotationalState(verbIndex, totalVerbs, voice, preferredVoiceStepDeg) {
+        var safeTotal = Math.max(1, totalVerbs);
+        var deltaVerbDeg = 360 / safeTotal;
+        var maxSafeVoiceStep = Math.min(20, Number((deltaVerbDeg / 3.2).toFixed(2)));
+        var voiceStepDeg = Math.min(preferredVoiceStepDeg, maxSafeVoiceStep);
+        var thetaVerbDeg = Number((verbIndex * deltaVerbDeg).toFixed(2));
+        var mult = VOICE_METADATA[voice].stepMultiplier;
+        var thetaVoiceDeg = Number((mult * voiceStepDeg).toFixed(2));
+        var disc1StemCompensationDeg = Number((-(thetaVerbDeg + thetaVoiceDeg)).toFixed(2));
+        var disc2DesinenceCompensationDeg = Number((-thetaVoiceDeg).toFixed(2));
+        return { verbIndex: verbIndex, voice: voice, deltaVerbDeg: Number(deltaVerbDeg.toFixed(2)), thetaVerbDeg: thetaVerbDeg, voiceStepDeg: voiceStepDeg, thetaVoiceDeg: thetaVoiceDeg, disc1StemCompensationDeg: disc1StemCompensationDeg, disc2DesinenceCompensationDeg: disc2DesinenceCompensationDeg };
+      }
+
+      function exportMatrixAsSemicolonCSV(verbs, windows, preferredVoiceStepDeg, system) {
+        var platesMap = getDesinencePlatesForSystem(system);
+        var systemTag = system === 'mi' ? 'SISTEMA_MI' : 'SISTEMA_OMEGA';
+        var headers = ['Camada_Fisica', 'Sistema', 'Verbo_ID', 'Lexema', 'Diatese', 'Theta_Verbo_Graus', 'Theta_Voz_Graus', 'Formula_Compensacao', 'Angulo_Compensacao'].concat(windows.map(function (w) { return w.id + '_' + w.slotKey; }));
+        var rows = [headers.join(';')];
+        VOICES_ORDER.forEach(function (voice) {
+          var rot = computeRotationalState(0, verbs.length, voice, preferredVoiceStepDeg);
+          var rowNum = rows.length + 1;
+          var plateCells = windows.map(function (win) { return '"' + platesMap[win.slotKey][voice].plateLines.join(' | ').replace(/"/g, '""') + '"'; });
+          rows.push(['DISCO_2_DESINENCIAS', systemTag, 'UNIVERSAL', system === 'mi' ? 'Chave_Atematica_MI' : 'Chave_Tematica_OMEGA', VOICE_METADATA[voice].label, '0', String(rot.thetaVoiceDeg).replace('.', ','), '=-G' + rowNum, String(rot.disc2DesinenceCompensationDeg).replace('.', ',')].concat(plateCells).join(';'));
+        });
+        verbs.forEach(function (verb, vIdx) {
+          VOICES_ORDER.forEach(function (voice) {
+            var rot = computeRotationalState(vIdx, verbs.length, voice, preferredVoiceStepDeg);
+            var rowNum = rows.length + 1;
+            var stemCells = windows.map(function (win) { return '"' + readOpticalWindow(verb, voice, win.slotKey, system).isolatedStem + '-"'; });
+            rows.push(['DISCO_1_RADICAIS', systemTag, verb.id, verb.lemma, VOICE_METADATA[voice].label, String(rot.thetaVerbDeg).replace('.', ','), String(rot.thetaVoiceDeg).replace('.', ','), '=-SUM(F' + rowNum + ';G' + rowNum + ')', String(rot.disc1StemCompensationDeg).replace('.', ',')].concat(stemCells).join(';'));
+          });
+        });
+        return rows.join('\n');
+      }
+
+      /* =========================================================================
+         5. ESTADO REATIVO DA APLICAÇÃO E ANIMAÇÃO ROTACIONAL
+         ========================================================================= */
+      var savedBoot = (typeof window !== 'undefined' && window.__VOLVELLA_SAVED_STATE__ && typeof window.__VOLVELLA_SAVED_STATE__ === 'object') ? window.__VOLVELLA_SAVED_STATE__ : null;
+
+      var state = {
+        decks: savedBoot && savedBoot.decks ? deepClone(savedBoot.decks) : deepClone(INITIAL_DECKS),
+        activeDeckId: savedBoot && savedBoot.activeDeckId ? savedBoot.activeDeckId : 'omega_barytone',
+        windows: savedBoot && Array.isArray(savedBoot.windows) ? deepClone(savedBoot.windows) : deepClone(DEFAULT_WINDOWS),
+        selectedVerbIndex: 0,
+        selectedVoice: 'active',
+        selectedWindowId: 'w1',
+        preferredVoiceStepDeg: savedBoot && typeof savedBoot.preferredVoiceStepDeg === 'number' ? savedBoot.preferredVoiceStepDeg : 20,
+        kerningPx: savedBoot && typeof savedBoot.kerningPx === 'number' ? savedBoot.kerningPx : 1.2,
+        activeSection: 'instrument',
+        xrayMode: false,
+        pigmentId: savedBoot && savedBoot.pigmentId && PIGMENT_THEMES[savedBoot.pigmentId] ? savedBoot.pigmentId : 'crimson',
+        isPrintView: false,
+        printScaleId: 'a4_optimal',
+        printScopeId: 'all_systems',
+        expandedLexemeId: 'luo',
+        includeEditsInHtml: true,
+        jsonImportOpen: false,
+        jsonDraft: '',
+        jsonImportError: '',
+        statusBanner: ''
+      };
+
+      var anim = { disc1Deg: 0, disc2Deg: 0, targetDisc1Deg: 0, targetDisc2Deg: 0, rafId: 0, initialized: false };
+
+      function applyPigmentCssVars() {
+        var p = PIGMENT_THEMES[state.pigmentId] || PIGMENT_THEMES.crimson;
+        var root = document.documentElement;
+        root.style.setProperty('--pigment', p.hex);
+        root.style.setProperty('--pigment-hover', p.hoverHex);
+        root.style.setProperty('--pigment-muted', p.mutedHex);
+        root.style.setProperty('--pigment-soft', p.softRgba);
+        root.style.setProperty('--paper-d1', p.paperDisc1);
+        root.style.setProperty('--paper-d2', p.paperDisc2);
+        root.style.setProperty('--paper-d3', p.paperDisc3);
+
+        var scale = SCALE_PRESETS[state.printScaleId] || SCALE_PRESETS.a4_optimal;
+        root.style.setProperty('--page-w', scale.pageW);
+        root.style.setProperty('--page-h', scale.pageH);
+      }
+
+      function stepDiscAnimation() {
+        var diff1 = ((((anim.targetDisc1Deg - anim.disc1Deg) % 360) + 540) % 360) - 180;
+        var diff2 = ((((anim.targetDisc2Deg - anim.disc2Deg) % 360) + 540) % 360) - 180;
+        var settled1 = Math.abs(diff1) < 0.08;
+        var settled2 = Math.abs(diff2) < 0.08;
+
+        anim.disc1Deg = settled1 ? anim.disc1Deg + diff1 : anim.disc1Deg + diff1 * 0.18;
+        anim.disc2Deg = settled2 ? anim.disc2Deg + diff2 : anim.disc2Deg + diff2 * 0.18;
+
+        var g1 = document.getElementById('svg-disc1-layer');
+        var g2 = document.getElementById('svg-disc2-layer');
+        var gx = document.getElementById('svg-xray-d2-ray');
+
+        if (g1) g1.setAttribute('transform', 'rotate(' + anim.disc1Deg.toFixed(2) + ')');
+        if (g2) g2.setAttribute('transform', 'rotate(' + anim.disc2Deg.toFixed(2) + ')');
+        if (gx) gx.setAttribute('transform', 'rotate(' + anim.disc2Deg.toFixed(2) + ')');
+
+        if (!settled1 || !settled2) {
+          anim.rafId = window.requestAnimationFrame(stepDiscAnimation);
+        } else {
+          anim.rafId = 0;
+        }
+      }
+
+      function syncDiscRotationTargets(rotation) {
+        var nextD1 = rotation.thetaVerbDeg + rotation.thetaVoiceDeg;
+        var nextD2 = rotation.thetaVoiceDeg;
+        anim.targetDisc1Deg = nextD1;
+        anim.targetDisc2Deg = nextD2;
+
+        var reduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        if (!anim.initialized || reduced) {
+          anim.disc1Deg = nextD1;
+          anim.disc2Deg = nextD2;
+          anim.initialized = true;
+          return;
+        }
+        if (!anim.rafId) {
+          anim.rafId = window.requestAnimationFrame(stepDiscAnimation);
+        }
+      }
+
+      /* =========================================================================
+         6. GERADOR DE SVG CONCÊNTRICO E MOLDES FÍSICOS
+         ========================================================================= */
+      function renderHueberStemSvg(stem, cell, kerningPx, fill, cellFill, cellStroke, opacity) {
+        if (!stem) return '';
+        var displayStem = stem + '-';
+        var rightPad = Math.max(1.0, Math.min(2.6, 0.9 + (kerningPx - 0.4) * 0.55));
+        var textRightX = cell.x + cell.width - rightPad;
+        var maxSafeWidth = Math.max(13, textRightX - (cell.x + 1.4));
+        var idealFontSize = Math.min(11.4, cell.height * 0.55);
+        var effectiveFontSize = Math.max(8.2, Math.min(idealFontSize, maxSafeWidth / Math.max(1, displayStem.length * 0.54)));
+        var clampAttrs = (displayStem.length * effectiveFontSize * 0.55 > maxSafeWidth) ? ' textLength="' + maxSafeWidth.toFixed(1) + '" lengthAdjust="spacingAndGlyphs"' : '';
+        return '<g opacity="' + (opacity == null ? 1 : opacity) + '"><rect x="' + cell.x.toFixed(2) + '" y="' + cell.y.toFixed(2) + '" width="' + cell.width.toFixed(2) + '" height="' + cell.height.toFixed(2) + '" rx="' + cell.rx + '" fill="' + cellFill + '" stroke="' + cellStroke + '" stroke-width="0.6" /><text x="' + textRightX.toFixed(2) + '" y="0" text-anchor="end" dominant-baseline="central" font-size="' + effectiveFontSize.toFixed(2) + '" font-family="Georgia, serif" font-weight="700" fill="' + fill + '"' + clampAttrs + '>' + escHtml(displayStem) + '</text></g>';
+      }
+
+      function renderHueberPlateSvg(lines, plateBox, kerningPx, fill, accentStroke, plateFill, plateStroke, opacity) {
+        if (!lines || !lines.length) return '';
+        var braceTipX = plateBox.x + 1.0;
+        var braceMidX = plateBox.x + 1.9;
+        var braceArmX = plateBox.x + 3.0;
+        var braceHalfH = Math.max(5.2, (plateBox.height - 4.2) / 2);
+        var kerningShift = Math.max(0, Math.min(1.6, (kerningPx - 0.8) * 0.45));
+        var textStartX = plateBox.x + 3.7 + kerningShift;
+        var maxSafeWidth = Math.max(18, plateBox.x + plateBox.width - 1.4 - textStartX);
+        var baseFontSize = Math.min(7.5, (plateBox.height - 3.2) / (lines.length * 1.08));
+        var rowStepPx = baseFontSize * 1.08;
+
+        var pathD = 'M ' + braceArmX + ' ' + (-braceHalfH) + ' Q ' + braceMidX + ' ' + (-braceHalfH) + ' ' + braceMidX + ' ' + (-braceHalfH * 0.45) + ' L ' + braceMidX + ' -1.3 L ' + braceTipX + ' 0 L ' + braceMidX + ' 1.3 L ' + braceMidX + ' ' + (braceHalfH * 0.45) + ' Q ' + braceMidX + ' ' + braceHalfH + ' ' + braceArmX + ' ' + braceHalfH;
+
+        var textsHtml = lines.map(function (line, idx) {
+          var yOffset = (idx - (lines.length - 1) / 2) * rowStepPx;
+          var estWidth = line.length * baseFontSize * 0.54;
+          var lineFontSize = estWidth > maxSafeWidth ? Math.max(6.4, maxSafeWidth / Math.max(1, line.length * 0.54)) : baseFontSize;
+          var clampAttrs = (line.length * lineFontSize * 0.55 > maxSafeWidth) ? ' textLength="' + maxSafeWidth.toFixed(1) + '" lengthAdjust="spacingAndGlyphs"' : '';
+          return '<text x="' + textStartX.toFixed(2) + '" y="' + yOffset.toFixed(2) + '" text-anchor="start" dominant-baseline="central" font-size="' + lineFontSize.toFixed(2) + '" font-family="Georgia, serif" font-weight="600" fill="' + fill + '"' + clampAttrs + '>' + escHtml(line) + '</text>';
+        }).join('');
+
+        return '<g opacity="' + (opacity == null ? 1 : opacity) + '"><rect x="' + plateBox.x.toFixed(2) + '" y="' + plateBox.y.toFixed(2) + '" width="' + plateBox.width.toFixed(2) + '" height="' + plateBox.height.toFixed(2) + '" rx="' + plateBox.rx + '" fill="' + plateFill + '" stroke="' + plateStroke + '" stroke-width="0.65" /><path d="' + pathD + '" fill="none" stroke="' + accentStroke + '" stroke-width="0.75" opacity="0.82" />' + textsHtml + '</g>';
+      }
+
+      function renderVolvellaSvg(verbs, windows, rotation, conjugationSystem, pigment) {
+        var windowsWithBoxes = windows.map(function (win) { return { win: win, boxes: computeNestedBoxMetrics(win) }; });
+        var platesMap = getDesinencePlatesForSystem(conjugationSystem);
+        var disc2VoicePlates = VOICES_ORDER.map(function (vId) {
+          var vRot = computeRotationalState(0, verbs.length, vId, rotation.voiceStepDeg);
+          return { voice: vId, compDeg: vRot.disc2DesinenceCompensationDeg, thetaVoiceDeg: vRot.thetaVoiceDeg };
+        });
+
+        var mask3Rects = windowsWithBoxes.map(function (wb) { return '<rect x="' + (wb.win.x + wb.boxes.d3Outer.x) + '" y="' + (wb.win.y + wb.boxes.d3Outer.y) + '" width="' + wb.boxes.d3Outer.width + '" height="' + wb.boxes.d3Outer.height + '" rx="' + wb.boxes.d3Outer.rx + '" fill="black" />'; }).join('');
+        var mask2Cutouts = disc2VoicePlates.map(function (vp) {
+          return windowsWithBoxes.map(function (wb) { return '<g transform="rotate(' + vp.compDeg + ') translate(' + wb.win.x + ', ' + wb.win.y + ')"><rect x="' + wb.boxes.d2Cutout.x + '" y="' + wb.boxes.d2Cutout.y + '" width="' + wb.boxes.d2Cutout.width + '" height="' + wb.boxes.d2Cutout.height + '" rx="' + wb.boxes.d2Cutout.rx + '" fill="black" /></g>'; }).join('');
+        }).join('');
+
+        var stationsHtml = disc2VoicePlates.map(function (vp) {
+          var isCur = rotation.voice === vp.voice;
+          var degStr = vp.thetaVoiceDeg > 0 ? '+' + vp.thetaVoiceDeg : String(vp.thetaVoiceDeg);
+          return '<g transform="rotate(' + vp.thetaVoiceDeg + ')" data-action="select-voice" data-voice="' + vp.voice + '" class="svg-clickable"><line x1="0" y1="-431" x2="0" y2="-443" stroke="' + (isCur ? pigment.hex : '#A8A29E') + '" stroke-width="' + (isCur ? '2.6' : '1.3') + '" /><circle cx="0" cy="-448" r="' + (isCur ? '4.8' : '2.8') + '" fill="' + (isCur ? pigment.hex : '#D6D3D1') + '" /><text x="0" y="-461" text-anchor="middle" font-size="10" font-family="sans-serif" font-weight="' + (isCur ? '700' : '500') + '" fill="' + (isCur ? pigment.hex : '#78716C') + '">' + VOICE_METADATA[vp.voice].label + ' (' + degStr + '°)</text></g>';
+        }).join('');
+
+        var ticksHtml = '';
+        for (var d = 0; d < 360; d += 5) ticksHtml += '<line transform="rotate(' + d + ')" x1="0" y1="-428" x2="0" y2="' + (d % 30 === 0 ? '-420.5' : '-424.5') + '" stroke="' + pigment.mutedHex + '" stroke-width="' + (d % 30 === 0 ? '1.1' : '0.55') + '" opacity="0.6" />';
+
+        var rimVerbsHtml = verbs.map(function (verb, i) {
+          var thetaVerb = i * rotation.deltaVerbDeg;
+          var isSel = i === rotation.verbIndex;
+          var clampAttrs = (verb.lemma.length * 15.2 * 0.56 > 57) ? ' textLength="57" lengthAdjust="spacingAndGlyphs"' : '';
+          var subTicks = disc2VoicePlates.map(function (vp) { return '<line transform="rotate(' + (-(thetaVerb + vp.thetaVoiceDeg)) + ')" x1="0" y1="-393" x2="0" y2="-398" stroke="' + pigment.mutedHex + '" stroke-width="0.9" opacity="0.65" />'; }).join('');
+          return '<g><line transform="rotate(' + (-thetaVerb - rotation.deltaVerbDeg / 2) + ')" x1="36" y1="0" x2="428" y2="0" stroke="#E7E5E0" stroke-width="0.85" />' + subTicks + '<g transform="rotate(' + (-thetaVerb) + ') translate(0, -408.5)" data-action="select-verb" data-index="' + i + '" class="svg-clickable"><rect x="-56" y="-14" width="112" height="28" fill="transparent" /><rect x="-31.5" y="-9" width="63" height="18" rx="1.4" fill="#FFFDF9" stroke="' + (isSel ? pigment.hex : '#C7C2B8') + '" stroke-width="' + (isSel ? '1.05' : '0.7') + '" /><text text-anchor="middle" dominant-baseline="central" font-size="15.2" font-family="Georgia, serif" font-weight="700" fill="' + (isSel ? pigment.hex : '#3F3A36') + '"' + clampAttrs + '>' + escHtml(verb.lemma) + '</text></g></g>';
+        }).join('');
+
+        var disc1StemsHtml = verbs.map(function (verb, vIdx) {
+          return VOICES_ORDER.map(function (vId) {
+            var rayRot = computeRotationalState(vIdx, verbs.length, vId, rotation.voiceStepDeg);
+            var isSelRay = vIdx === rotation.verbIndex && vId === rotation.voice;
+            return windowsWithBoxes.map(function (wb) {
+              var reading = readOpticalWindow(verb, vId, wb.win.slotKey, conjugationSystem);
+              return '<g transform="rotate(' + rayRot.disc1StemCompensationDeg + ') translate(' + wb.win.x + ', ' + wb.win.y + ')">' + renderHueberStemSvg(reading.isolatedStem, wb.boxes.d1StemCell, state.kerningPx, state.xrayMode && !isSelRay ? pigment.mutedHex : '#1C1917', '#FFFDF9', isSelRay ? pigment.mutedHex : '#D6D3D1', state.xrayMode ? (isSelRay ? 1 : 0.34) : 1) + '</g>';
+            }).join('');
+          }).join('');
+        }).join('');
+
+        var disc2PlatesHtml = disc2VoicePlates.map(function (vp) {
+          var isAct = vp.voice === rotation.voice;
+          return windowsWithBoxes.map(function (wb) {
+            var plate = platesMap[wb.win.slotKey][vp.voice];
+            return '<g transform="rotate(' + vp.compDeg + ') translate(' + wb.win.x + ', ' + wb.win.y + ')"><rect x="' + wb.boxes.d2Cutout.x + '" y="' + wb.boxes.d2Cutout.y + '" width="' + wb.boxes.d2Cutout.width + '" height="' + wb.boxes.d2Cutout.height + '" rx="' + wb.boxes.d2Cutout.rx + '" fill="none" stroke="' + (isAct ? pigment.hex : '#A8A29E') + '" stroke-width="' + (state.xrayMode ? '0.85' : '0.75') + '"' + (state.xrayMode ? ' stroke-dasharray="2.5,1.8"' : '') + ' opacity="' + (state.xrayMode ? (isAct ? 0.9 : 0.35) : 0.72) + '" />' + renderHueberPlateSvg(plate.plateLines, wb.boxes.d2Plate, state.kerningPx, '#1C1917', pigment.hex, '#FAF6EC', isAct ? pigment.mutedHex : '#C7C2B8', state.xrayMode && !isAct ? 0.38 : 1) + '</g>';
+          }).join('');
+        }).join('');
+
+        var winFramesHtml = windowsWithBoxes.map(function (wb) {
+          var isSel = wb.win.id === state.selectedWindowId;
+          var seamWorldX = wb.win.x + wb.boxes.seamX;
+          return '<g data-action="select-window" data-win-id="' + escHtml(wb.win.id) + '" class="svg-clickable"><rect x="' + (wb.win.x + wb.boxes.d3Outer.x) + '" y="' + (wb.win.y + wb.boxes.d3Outer.y) + '" width="' + wb.boxes.d3Outer.width + '" height="' + wb.boxes.d3Outer.height + '" fill="transparent" /><rect x="' + (wb.win.x + wb.boxes.d3Outer.x) + '" y="' + (wb.win.y + wb.boxes.d3Outer.y) + '" width="' + wb.boxes.d3Outer.width + '" height="' + wb.boxes.d3Outer.height + '" rx="' + wb.boxes.d3Outer.rx + '" fill="none" stroke="' + (isSel ? pigment.hex : '#3F3A36') + '" stroke-width="' + (isSel ? '2.2' : '1.4') + '" /><line x1="' + seamWorldX + '" y1="' + (wb.win.y + wb.boxes.d3Outer.y) + '" x2="' + seamWorldX + '" y2="' + (wb.win.y + wb.boxes.d3Outer.y + 2.2) + '" stroke="' + pigment.hex + '" stroke-width="1.05" opacity="0.85" /><line x1="' + seamWorldX + '" y1="' + (wb.win.y + wb.boxes.d3Outer.y + wb.boxes.d3Outer.height - 2.2) + '" x2="' + seamWorldX + '" y2="' + (wb.win.y + wb.boxes.d3Outer.y + wb.boxes.d3Outer.height) + '" stroke="' + pigment.hex + '" stroke-width="1.05" opacity="0.85" />' + (isSel ? '<rect x="' + (wb.win.x + wb.boxes.d3Outer.x - 3) + '" y="' + (wb.win.y + wb.boxes.d3Outer.y - 3) + '" width="' + (wb.boxes.d3Outer.width + 6) + '" height="' + (wb.boxes.d3Outer.height + 6) + '" rx="' + (wb.boxes.d3Outer.rx + 1.8) + '" fill="none" stroke="' + pigment.hex + '" stroke-width="0.9" stroke-dasharray="3.5,2.5" />' : '') + '<text x="' + wb.win.x + '" y="' + (wb.win.y + wb.boxes.d3Outer.y - 5.2) + '" text-anchor="middle" font-size="9.4" font-family="sans-serif" font-weight="700" fill="' + (isSel ? pigment.hex : '#292524') + '">' + escHtml(wb.win.name) + '</text></g>';
+        }).join('');
+
+        return '<svg viewBox="-480 -482 960 964" class="volvella-svg" role="img"><defs><mask id="disco3-taxis-mask"><circle cx="0" cy="0" r="366" fill="white" />' + mask3Rects + '</mask><mask id="disco2-hueber-cutouts"><circle cx="0" cy="0" r="392" fill="white" /><path d="M -49 -389 L -41 -426.5 L 41 -426.5 L 49 -389 Z" fill="white" /><rect x="-35" y="-420.5" width="70" height="24" rx="2.6" fill="black" />' + mask2Cutouts + '</mask><clipPath id="disco2-plates-clip"><circle cx="0" cy="0" r="365" /></clipPath><clipPath id="disco1-stems-clip"><circle cx="0" cy="0" r="365" /></clipPath></defs><g>' + stationsHtml + '</g><g id="svg-disc1-layer" transform="rotate(' + anim.disc1Deg.toFixed(2) + ')"><circle cx="0" cy="0" r="428" fill="' + pigment.paperDisc1 + '" stroke="' + pigment.hex + '" stroke-width="2.4" /><circle cx="0" cy="0" r="393" fill="none" stroke="' + pigment.mutedHex + '" stroke-width="0.75" stroke-dasharray="3,3" />' + ticksHtml + rimVerbsHtml + '<g clip-path="url(#disco1-stems-clip)">' + disc1StemsHtml + '</g></g><g id="svg-disc2-layer" transform="rotate(' + anim.disc2Deg.toFixed(2) + ')" opacity="' + (state.xrayMode ? '0.62' : '1') + '"><g mask="url(#disco2-hueber-cutouts)"><circle cx="0" cy="0" r="392" fill="' + pigment.paperDisc2 + '" /><path d="M -49 -389 L -41 -426.5 L 41 -426.5 L 49 -389 Z" fill="' + pigment.paperDisc2 + '" /></g><circle cx="0" cy="0" r="392" fill="none" stroke="' + pigment.hex + '" stroke-width="1.7" /><path d="M -48.5 -391.5 L -41 -426.5 L 41 -426.5 L 48.5 -391.5" fill="none" stroke="' + pigment.hex + '" stroke-width="1.8" /><rect x="-35" y="-420.5" width="70" height="24" rx="2.6" fill="none" stroke="' + pigment.hex + '" stroke-width="1.25" /><polygon points="0,-428 -5.5,-421.5 5.5,-421.5" fill="' + pigment.hex + '" /><g clip-path="url(#disco2-plates-clip)">' + disc2PlatesHtml + '</g><text x="0" y="-377" text-anchor="middle" font-size="8.8" font-family="sans-serif" font-weight="700" letter-spacing="1.3" fill="' + pigment.hex + '">ΔΙΑΘΕΣΙΣ (' + (conjugationSystem === 'mi' ? '-ΜΙ' : '-Ω') + ') · ' + VOICE_METADATA[rotation.voice].greekLabel.toUpperCase() + '</text></g><g opacity="' + (state.xrayMode ? '0.24' : '1') + '"><circle cx="0" cy="0" r="366" fill="' + pigment.paperDisc3 + '" mask="url(#disco3-taxis-mask)" stroke="' + pigment.hex + '" stroke-width="2.5" /><circle cx="0" cy="0" r="358" fill="none" stroke="' + pigment.hex + '" stroke-width="0.65" opacity="0.45" /><line x1="0" y1="-282" x2="0" y2="296" stroke="' + pigment.mutedHex + '" stroke-width="0.65" stroke-dasharray="3,4" opacity="0.38" /><line x1="-196" y1="0" x2="214" y2="0" stroke="' + pigment.mutedHex + '" stroke-width="0.65" stroke-dasharray="3,4" opacity="0.38" /><text x="-178" y="-264" text-anchor="middle" font-size="9.5" font-family="Georgia, serif" font-style="italic" font-weight="600" fill="' + pigment.mutedHex + '">Hemisfério Imperfectivo</text><text x="178" y="-264" text-anchor="middle" font-size="9.5" font-family="Georgia, serif" font-style="italic" font-weight="600" fill="' + pigment.mutedHex + '">Prospectivo &amp; Perfectum</text></g>' + winFramesHtml + (state.xrayMode ? '<g><line x1="0" y1="0" x2="0" y2="-366" stroke="#1C1917" stroke-width="1.15" stroke-dasharray="4,4" /><line id="svg-xray-d2-ray" transform="rotate(' + anim.disc2Deg.toFixed(2) + ')" x1="0" y1="0" x2="0" y2="-392" stroke="' + pigment.hex + '" stroke-width="1.4" stroke-dasharray="3,3" /></g>' : '') + '<circle cx="0" cy="0" r="24" fill="#FAF8F3" stroke="' + pigment.hex + '" stroke-width="2.1" /><circle cx="0" cy="0" r="9.5" fill="' + pigment.hex + '" /><circle cx="0" cy="0" r="3.4" fill="#FFFDF9" /></svg>';
+      }
+
+      function renderCalibrationFooterHtml(instruction) {
+        var ticks = [0, 10, 20, 30, 40, 50].map(function (mm) { return '<g transform="translate(' + (6 + mm) + ', 0)"><line x1="0" y1="1.2" x2="0" y2="4.6" stroke="#1C1917" stroke-width="0.35" /><text x="0" y="8.1" text-anchor="middle" font-size="2.2" font-family="monospace" fill="#1C1917">' + (mm === 50 ? '50mm' : mm) + '</text></g>'; }).join('');
+        var halves = [5, 15, 25, 35, 45].map(function (h) { return '<line x1="' + (6 + h) + '" y1="2.1" x2="' + (6 + h) + '" y2="3.5" stroke="#57534E" stroke-width="0.25" />'; }).join('');
+        return '<div style="width:100%;padding-top:6px;border-top:1px solid #E7E5E0;display:flex;align-items:center;justify-content:space-between;gap:14px;"><p style="margin:0;font-size:9.5px;line-height:1.35;color:#57534E;max-width:116mm;">' + escHtml(instruction) + '</p><div style="display:flex;flex-direction:column;align-items:flex-end;flex-shrink:0;"><svg viewBox="0 0 62 9.5" width="62mm" height="9.5mm"><line x1="6" y1="3.5" x2="56" y2="3.5" stroke="#1C1917" stroke-width="0.35" />' + ticks + halves + '</svg><span class="font-mono" style="font-size:8.5px;color:#78716C;">Aferição 5,0 cm (Escala 100%)</span></div></div>';
+      }
+
+      function renderCenterFastenerSvg(mmPerUnit) {
+        var r = (2.5 / mmPerUnit).toFixed(2);
+        return '<g><circle cx="0" cy="0" r="' + r + '" fill="none" stroke="#1C1917" stroke-width="1.15" stroke-dasharray="2.5,2" /><circle cx="0" cy="0" r="1.8" fill="#1C1917" /><line x1="-18" y1="0" x2="18" y2="0" stroke="#1C1917" stroke-width="0.8" /><line x1="0" y1="-18" x2="0" y2="18" stroke="#1C1917" stroke-width="0.8" /></g>';
+      }
+
+      function renderAllPrintPagesHtml(voiceStepDeg) {
+        var scale = SCALE_PRESETS[state.printScaleId] || SCALE_PRESETS.a4_optimal;
+        var windowsWithBoxes = state.windows.map(function (win) { return { win: win, boxes: computeNestedBoxMetrics(win) }; });
+        var selectedDeckIds = state.printScopeId === 'omega_only' ? ['omega_barytone', 'omega_contract'] : state.printScopeId === 'mi_only' ? ['mi_athematic'] : ['omega_barytone', 'omega_contract', 'mi_athematic'];
+        var disc1Sheets = [];
+        selectedDeckIds.forEach(function (deckId) {
+          var meta = DISC_DECK_METADATA[deckId];
+          var arr = state.decks[deckId] || [];
+          for (var i = 0; i < arr.length; i += 4) {
+            disc1Sheets.push({ title: meta.fullTitle + (arr.length > 4 ? ' · Parte ' + (Math.floor(i / 4) + 1) : ''), system: meta.system, batch: arr.slice(i, i + 4) });
+          }
+        });
+        var disc2Systems = state.printScopeId === 'omega_only' ? ['omega'] : state.printScopeId === 'mi_only' ? ['mi'] : ['omega', 'mi'];
+        var totalPages = disc1Sheets.length + disc2Systems.length + 1;
+        var disc2VoiceConfigs = VOICES_ORDER.map(function (vId) {
+          var rot = computeRotationalState(0, 4, vId, voiceStepDeg);
+          return { voice: vId, thetaVoiceDeg: rot.thetaVoiceDeg, compDeg: rot.disc2DesinenceCompensationDeg };
+        });
+
+        // Injeta a tag de estilo para suportar a troca de página dinâmica no momento da impressão
+        var pagesHtml = '<style>@media print { html, body { width: ' + scale.pageW + ' !important; } .volvella-print-page { width: ' + scale.pageW + ' !important; height: ' + scale.pageH + ' !important; } @page { size: ' + scale.pageW + ' ' + scale.pageH + '; margin: 0; } }</style>';
+
+        disc1Sheets.forEach(function (sheet, sIdx) {
+          var batch = sheet.batch;
+          var deltaVerb = 360 / Math.max(1, batch.length);
+          var verbsSvg = batch.map(function (verb, vIdx) {
+            var thetaVerb = vIdx * deltaVerb;
+            var clampAttrs = (verb.lemma.length * 15.2 * 0.56 > 57) ? ' textLength="57" lengthAdjust="spacingAndGlyphs"' : '';
+            var raysSvg = VOICES_ORDER.map(function (vId) {
+              var rayRot = computeRotationalState(vIdx, batch.length, vId, voiceStepDeg);
+              var cellsSvg = windowsWithBoxes.map(function (wb) {
+                return '<g transform="rotate(' + rayRot.disc1StemCompensationDeg + ') translate(' + wb.win.x + ', ' + wb.win.y + ')">' + renderHueberStemSvg(readOpticalWindow(verb, vId, wb.win.slotKey, sheet.system).isolatedStem, wb.boxes.d1StemCell, state.kerningPx, '#1C1917', '#FFFFFF', '#C7C2B8', 1) + '</g>';
+              }).join('');
+              return '<g><line transform="rotate(' + rayRot.disc1StemCompensationDeg + ')" x1="0" y1="-392" x2="0" y2="-397" stroke="#78716C" stroke-width="0.85" />' + cellsSvg + '</g>';
+            }).join('');
+            return '<g><line transform="rotate(' + (-thetaVerb - deltaVerb / 2) + ')" x1="36" y1="0" x2="428" y2="0" stroke="#E7E5E0" stroke-width="0.75" stroke-dasharray="2,4" /><g transform="rotate(' + (-thetaVerb) + ') translate(0, -408.5)"><line x1="0" y1="-19.5" x2="0" y2="-13.5" stroke="#1C1917" stroke-width="1.35" /><rect x="-31.5" y="-9" width="63" height="18" rx="1.4" fill="#FFFFFF" stroke="#57534E" stroke-width="0.75" /><text x="0" y="0" text-anchor="middle" dominant-baseline="central" font-size="15.2" font-family="Georgia, serif" font-weight="700" fill="#1C1917"' + clampAttrs + '>' + escHtml(verb.lemma) + '</text></g>' + raysSvg + '</g>';
+          }).join('');
+
+          pagesHtml += '<section class="volvella-print-page"><div style="width:100%;display:flex;align-items:baseline;justify-content:space-between;border-bottom:1px solid #E7E5E0;padding-bottom:6px;"><span style="font-size:12px;font-weight:600;">Folha ' + (sIdx + 1) + ' de ' + totalPages + ' · ' + escHtml(sheet.title) + '</span><span class="font-mono tabular-nums" style="font-size:11px;color:#57534E;">Corte: Ø ' + scale.disc1DiamMm + ' · ' + batch.length + ' Verbos (' + Math.round(deltaVerb) + '°)</span></div><svg viewBox="-440 -440 880 880" width="' + scale.svgAttrMm + '" height="' + scale.svgAttrMm + '" style="width:' + scale.svgAttrMm + ';height:' + scale.svgAttrMm + ';flex-shrink:0;"><circle cx="0" cy="0" r="428" fill="none" stroke="#1C1917" stroke-width="1.6" stroke-dasharray="6,5" /><circle cx="0" cy="0" r="392" fill="none" stroke="#D6D3D1" stroke-width="0.7" /><circle cx="0" cy="0" r="366" fill="none" stroke="#E7E5E0" stroke-width="0.65" /><text x="0" y="421" text-anchor="middle" font-size="7.2" font-family="monospace" fill="#78716C">LINHA DE CORTE DISCO 1 (' + (sheet.system === 'mi' ? 'SISTEMA -ΜΙ' : 'SISTEMA -Ω') + ') · Ø ' + scale.disc1DiamMm + '</text>' + renderCenterFastenerSvg(scale.mmPerUnit) + verbsSvg + '</svg>' + renderCalibrationFooterHtml('Recorte pela circunferência externa (Ø ' + scale.disc1DiamMm + ') e use sob o Anel Desinencial correspondente.') + '</section>';
+        });
+
+        disc2Systems.forEach(function (sys, sysIdx) {
+          var platesMap = getDesinencePlatesForSystem(sys);
+          var blocksSvg = disc2VoiceConfigs.map(function (vc) {
+            return windowsWithBoxes.map(function (wb) {
+              var plate = platesMap[wb.win.slotKey][vc.voice];
+              return '<g transform="rotate(' + vc.compDeg + ') translate(' + wb.win.x + ', ' + wb.win.y + ')"><rect x="' + wb.boxes.d2Cutout.x + '" y="' + wb.boxes.d2Cutout.y + '" width="' + wb.boxes.d2Cutout.width + '" height="' + wb.boxes.d2Cutout.height + '" rx="' + wb.boxes.d2Cutout.rx + '" fill="none" stroke="#1C1917" stroke-width="0.95" stroke-dasharray="2.5,2" /><rect x="' + wb.boxes.d1StemCell.x + '" y="' + wb.boxes.d1StemCell.y + '" width="' + wb.boxes.d1StemCell.width + '" height="' + wb.boxes.d1StemCell.height + '" rx="' + wb.boxes.d1StemCell.rx + '" fill="none" stroke="#E7E5E0" stroke-width="0.4" /><text x="' + (wb.boxes.d2Cutout.x + wb.boxes.d2Cutout.width / 2) + '" y="0" text-anchor="middle" dominant-baseline="central" font-size="5.4" font-family="sans-serif" fill="#A8A29E">VAZAR</text>' + renderHueberPlateSvg(plate.plateLines, wb.boxes.d2Plate, state.kerningPx, '#1C1917', '#1C1917', '#FFFFFF', '#78716C', 1) + '</g>';
+            }).join('');
+          }).join('');
+
+          pagesHtml += '<section class="volvella-print-page"><div style="width:100%;display:flex;align-items:baseline;justify-content:space-between;border-bottom:1px solid #E7E5E0;padding-bottom:6px;"><span style="font-size:12px;font-weight:600;">Folha ' + (disc1Sheets.length + sysIdx + 1) + ' de ' + totalPages + ' · Disco 2-' + (sys === 'mi' ? 'ΜΙ' : 'Ω') + '</span><span class="font-mono tabular-nums" style="font-size:11px;color:#57534E;">Corte: Ø ' + scale.disc2DiamMm + ' (+ Aba Alidade)</span></div><svg viewBox="-440 -440 880 880" width="' + scale.svgAttrMm + '" height="' + scale.svgAttrMm + '" style="width:' + scale.svgAttrMm + ';height:' + scale.svgAttrMm + ';flex-shrink:0;"><circle cx="0" cy="0" r="392" fill="none" stroke="#1C1917" stroke-width="1.6" stroke-dasharray="6,5" /><circle cx="0" cy="0" r="366" fill="none" stroke="#E7E5E0" stroke-width="0.65" /><path d="M -49 -389 L -41 -426.5 L 41 -426.5 L 49 -389" fill="#FFFFFF" stroke="#1C1917" stroke-width="1.6" stroke-dasharray="5,3.5" /><rect x="-35" y="-420.5" width="70" height="24" rx="2.6" fill="none" stroke="#1C1917" stroke-width="1.1" stroke-dasharray="3,2.2" /><text x="0" y="-408.5" text-anchor="middle" dominant-baseline="central" font-size="5.3" font-family="sans-serif" font-weight="600" fill="#78716C">VAZAR VISOR</text><polygon points="0,-428 -5,-421.5 5,-421.5" fill="#1C1917" /><text x="0" y="-377" text-anchor="middle" font-size="8" font-family="sans-serif" font-weight="700" letter-spacing="1" fill="#1C1917">ALINHAR À ESTAÇÃO DE VOZ</text><text x="0" y="384" text-anchor="middle" font-size="7.2" font-family="monospace" fill="#78716C">LINHA DE CORTE DISCO 2 · Ø ' + scale.disc2DiamMm + '</text>' + renderCenterFastenerSvg(scale.mmPerUnit) + blocksSvg + '</svg>' + renderCalibrationFooterHtml('Recorte preservando a aba superior. Vaze o visor superior e os 36 retângulos tracejados.') + '</section>';
+        });
+
+        var stationsPrintSvg = disc2VoiceConfigs.map(function (vc) {
+          return '<g transform="rotate(' + vc.thetaVoiceDeg + ')"><line x1="0" y1="-366" x2="0" y2="-355" stroke="#1C1917" stroke-width="1.4" /><polygon points="0,-366 -4,-358 4,-358" fill="#1C1917" /><text x="0" y="-345" text-anchor="middle" font-size="8.5" font-family="sans-serif" font-weight="700" fill="#1C1917">' + VOICE_METADATA[vc.voice].label + ' (' + (vc.thetaVoiceDeg > 0 ? '+' : '') + vc.thetaVoiceDeg + '°)</text></g>';
+        }).join('');
+
+        var d3WindowsPrintSvg = windowsWithBoxes.map(function (wb) {
+          var seamWorldX = wb.win.x + wb.boxes.seamX;
+          return '<g><rect x="' + (wb.win.x + wb.boxes.d3Outer.x) + '" y="' + (wb.win.y + wb.boxes.d3Outer.y) + '" width="' + wb.boxes.d3Outer.width + '" height="' + wb.boxes.d3Outer.height + '" rx="' + wb.boxes.d3Outer.rx + '" fill="none" stroke="#1C1917" stroke-width="1.25" stroke-dasharray="4,3" /><rect x="' + (wb.win.x + wb.boxes.d2Envelope.x) + '" y="' + (wb.win.y + wb.boxes.d2Envelope.y) + '" width="' + wb.boxes.d2Envelope.width + '" height="' + wb.boxes.d2Envelope.height + '" rx="' + wb.boxes.d2Envelope.rx + '" fill="none" stroke="#E7E5E0" stroke-width="0.45" /><line x1="' + seamWorldX + '" y1="' + (wb.win.y + wb.boxes.d3Outer.y) + '" x2="' + seamWorldX + '" y2="' + (wb.win.y + wb.boxes.d3Outer.y + 2.2) + '" stroke="#1C1917" stroke-width="1" /><line x1="' + seamWorldX + '" y1="' + (wb.win.y + wb.boxes.d3Outer.y + wb.boxes.d3Outer.height - 2.2) + '" x2="' + seamWorldX + '" y2="' + (wb.win.y + wb.boxes.d3Outer.y + wb.boxes.d3Outer.height) + '" stroke="#1C1917" stroke-width="1" /><text x="' + wb.win.x + '" y="' + (wb.win.y + wb.boxes.d3Outer.y - 5) + '" text-anchor="middle" font-size="9.2" font-family="sans-serif" font-weight="700" fill="#1C1917">' + escHtml(wb.win.name) + '</text><text x="' + wb.win.x + '" y="' + wb.win.y + '" text-anchor="middle" dominant-baseline="central" font-size="6.8" font-family="sans-serif" letter-spacing="1.1" fill="#78716C">VAZAR JANELA COMPLETA</text></g>';
+        }).join('');
+
+        pagesHtml += '<section class="volvella-print-page"><div style="width:100%;display:flex;align-items:baseline;justify-content:space-between;border-bottom:1px solid #E7E5E0;padding-bottom:6px;"><span style="font-size:12px;font-weight:600;">Folha ' + totalPages + ' de ' + totalPages + ' · Disco 3 (Frente)</span><span class="font-mono tabular-nums" style="font-size:11px;color:#57534E;">Corte: Ø ' + scale.disc3DiamMm + ' · 12 Janelas</span></div><svg viewBox="-440 -440 880 880" width="' + scale.svgAttrMm + '" height="' + scale.svgAttrMm + '" style="width:' + scale.svgAttrMm + ';height:' + scale.svgAttrMm + ';flex-shrink:0;"><circle cx="0" cy="0" r="392" fill="none" stroke="#E7E5E0" stroke-width="0.5" stroke-dasharray="2,4" /><circle cx="0" cy="0" r="366" fill="none" stroke="#1C1917" stroke-width="1.8" stroke-dasharray="6,5" /><circle cx="0" cy="0" r="358" fill="none" stroke="#A8A29E" stroke-width="0.55" />' + stationsPrintSvg + '<text x="0" y="354" text-anchor="middle" font-size="7" font-family="monospace" fill="#78716C">CORTE DISCO 3 UNIVERSAL · Ø ' + scale.disc3DiamMm + '</text>' + renderCenterFastenerSvg(scale.mmPerUnit) + '<text x="-158" y="-252" text-anchor="middle" font-size="9.5" font-family="Georgia, serif" font-style="italic" fill="#57534E">Hemisfério Imperfectivo</text><text x="182" y="-254" text-anchor="middle" font-size="9.5" font-family="Georgia, serif" font-style="italic" fill="#57534E">Prospectivo &amp; Perfectum</text>' + d3WindowsPrintSvg + '</svg>' + renderCalibrationFooterHtml('Recorte pela circunferência externa, vaze as 12 janelas tracejadas e una os discos pelo eixo central com um colchete bailarina (brad).') + '</section>';
+
+        return { pagesHtml: pagesHtml, totalPages: totalPages, scale: scale };
+      }
+
+      function buildStandaloneUnifiedHtml(embedState) {
+        var cssCode = document.getElementById('volvella-css') ? document.getElementById('volvella-css').textContent : '';
+        var jsCode = document.getElementById('volvella-js') ? document.getElementById('volvella-js').textContent : '';
+        var closeStyleTag = '</st' + 'yle>';
+        var closeScriptTag = '</scr' + 'ipt>';
+        var openComment = '<!' + '--';
+        var persistedPayload = embedState ? JSON.stringify({ decks: state.decks, activeDeckId: state.activeDeckId, windows: state.windows, pigmentId: state.pigmentId, preferredVoiceStepDeg: state.preferredVoiceStepDeg, kerningPx: state.kerningPx }).split(closeScriptTag).join('<\\/script>').split(openComment).join('<\\!--') : 'null';
+
+        return '<!doctype html>\n<html lang="pt-BR">\n<head>\n  <meta charset="UTF-8" />\n  <meta name="viewport" content="width=device-width, initial-scale=1.0" />\n  <title>Volvella Grammatica</title>\n  <style id="volvella-css">' + cssCode.split(closeStyleTag).join('<\\/style>') + closeStyleTag + '\n</head>\n<body>\n  <div id="app"></div>\n  <script id="volvella-state">window.__VOLVELLA_SAVED_STATE__ = ' + persistedPayload + ';' + closeScriptTag + '\n  <script id="volvella-js">' + jsCode + closeScriptTag + '\n</body>\n</html>\n';
+      }
+
+      function triggerDownloadBlob(content, filename, mimeType) {
+        var blob = new Blob([content], { type: mimeType });
+        var url = URL.createObjectURL(blob);
+        var a = document.createElement('a');
+        a.href = url;
+        a.download = filename;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        window.setTimeout(function () { URL.revokeObjectURL(url); }, 3000);
+        return Math.round((blob.size / 1024) * 10) / 10;
+      }
+
+      /* =========================================================================
+         7. RENDERIZAÇÃO DOS PAINÉIS LATERAIS DO ESTÚDIO
+         ========================================================================= */
+      function renderInstrumentAsideHtml(currentVerb, selectedWindow, rotation, conjugationSystem, pigment) {
+        var reading = readOpticalWindow(currentVerb, state.selectedVoice, selectedWindow.slotKey, conjugationSystem);
+        var boxes = computeNestedBoxMetrics(selectedWindow);
+        var platesHtml = reading.plate.plateLines.map(function (ln) { return '<div class="font-greek" style="font-size:1.05rem;font-weight:600;line-height:1.35;color:#1C1917;">' + escHtml(ln) + '</div>'; }).join('');
+        var expandedHtml = reading.plate.expandedEndings.map(function (ex) { return '<div class="font-greek" style="font-size:0.9rem;color:#292524;">' + escHtml(ex) + '</div>'; }).join('');
+
+        var triadHtml = VOICES_ORDER.map(function (vId) {
+          var vRot = computeRotationalState(rotation.verbIndex, (state.decks[state.activeDeckId] || []).length, vId, state.preferredVoiceStepDeg);
+          var vRead = readOpticalWindow(currentVerb, vId, selectedWindow.slotKey, conjugationSystem);
+          var degStr = vRot.thetaVoiceDeg > 0 ? '+' + vRot.thetaVoiceDeg : String(vRot.thetaVoiceDeg);
+          var isAct = vId === state.selectedVoice;
+          return '<button type="button" data-action="select-voice" data-voice="' + vId + '" class="triad-item' + (isAct ? ' active' : '') + '"><div style="display:flex;align-items:center;justify-content:space-between;font-size:0.75rem;"><span style="font-weight:600;color:' + (isAct ? pigment.hex : '#44403C') + ';">' + VOICE_METADATA[vId].label + ' (' + degStr + '°)</span><span class="font-mono" style="font-size:0.68rem;color:#A8A29E;">Tema: ' + escHtml(vRead.stemKeyUsed) + '</span></div><div class="font-greek" style="font-size:1rem;color:#1C1917;display:flex;align-items:baseline;gap:6px;"><strong>' + escHtml(vRead.isolatedStem) + '-</strong><span style="color:#A8A29E;">}</span><span>' + escHtml(vRead.plate.plateLines.join(' / ')) + '</span></div></button>';
+        }).join('');
+
+        var quickWinsHtml = state.windows.map(function (win) {
+          var isSel = win.id === selectedWindow.id;
+          return '<button type="button" data-action="select-window" data-win-id="' + escHtml(win.id) + '" class="win-btn' + (isSel ? ' active' : '') + '"><span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">' + escHtml(win.name) + '</span><span class="font-mono tabular-nums" style="font-size:0.65rem;color:#A8A29E;flex-shrink:0;">' + win.x + ',' + win.y + '</span></button>';
+        }).join('');
+
+        return '<div class="card" style="display:flex;flex-direction:column;gap:16px;"><div style="display:flex;align-items:baseline;justify-content:space-between;gap:8px;border-bottom:1px solid #F1EFEA;padding-bottom:12px;"><div><div style="font-size:0.75rem;color:#78716C;display:flex;align-items:center;gap:6px;"><span class="font-greek" style="font-size:0.92rem;font-style:italic;color:#44403C;">' + escHtml(selectedWindow.greekSubtitle) + '</span><span>·</span><span class="font-mono tabular-nums">(' + selectedWindow.x + ', ' + selectedWindow.y + ')</span></div><h2 style="margin:3px 0 0;font-size:1.12rem;font-weight:600;color:#1C1917;">' + escHtml(selectedWindow.name) + '</h2></div><span style="font-size:0.74rem;color:#78716C;white-space:nowrap;">Tema Atual: <strong class="font-mono" style="color:#1C1917;">' + escHtml(reading.stemKeyUsed) + '</strong></span></div><div style="display:flex;flex-direction:column;gap:9px;"><div class="font-mono tabular-nums" style="display:flex;align-items:center;justify-content:space-between;font-size:0.68rem;color:#78716C;"><span>D3 (' + Math.round(boxes.d3Outer.width) + '×' + Math.round(boxes.d3Outer.height) + ')</span><span>⊃</span><span>D2 (' + Math.round(boxes.d2Envelope.width) + '×' + Math.round(boxes.d2Envelope.height) + ')</span><span>⊃</span><span>D1 (' + Math.round(boxes.d1StemCell.width) + '×' + Math.round(boxes.d1StemCell.height) + ')</span></div><div class="loupe-outer-d3"><div class="loupe-cutout-d2"><div class="loupe-cell-d1"><span class="font-greek" style="font-size:1.75rem;font-weight:700;line-height:1;color:#141210;">' + escHtml(reading.isolatedStem) + '-</span></div></div><div class="loupe-plate-d2"><span class="font-greek" style="font-size:1.55rem;font-weight:300;color:' + pigment.hex + ';user-select:none;">}</span><div style="min-width:0;">' + platesHtml + '</div></div></div><div style="display:flex;align-items:baseline;justify-content:space-between;gap:8px;font-size:0.76rem;color:#57534E;"><span>Resultado:</span><span class="font-greek" style="font-size:1.15rem;font-weight:700;color:#141210;">' + escHtml(reading.isolatedStem) + '<span style="color:' + pigment.hex + ';">·</span>' + escHtml(reading.plate.primarySuffix.replace(/^-/, '')) + '</span></div>' + (reading.atticSynthesisNote ? '<div style="display:flex;align-items:baseline;justify-content:space-between;gap:8px;font-size:0.76rem;"><span style="font-size:0.69rem;color:#78716C;flex-shrink:0;">Contração:</span><span class="font-greek" style="font-weight:600;text-align:right;color:' + pigment.hex + ';">' + escHtml(reading.atticSynthesisNote) + '</span></div>' : '') + '</div><div style="padding-top:10px;border-top:1px solid #F1EFEA;"><div style="display:flex;align-items:center;justify-content:space-between;font-size:0.75rem;margin-bottom:5px;"><label for="kerning-range" style="font-weight:500;color:#44403C;">Alinhamento (Kerning)</label><span class="font-mono tabular-nums" style="font-weight:600;">' + state.kerningPx.toFixed(1) + ' px</span></div><input id="kerning-range" type="range" min="0.4" max="3.6" step="0.2" value="' + state.kerningPx + '" data-input="kerning" style="width:100%;accent-color:#1C1917;" /></div><div style="padding-top:10px;border-top:1px solid #F1EFEA;display:flex;flex-direction:column;gap:6px;"><div style="font-size:0.74rem;font-weight:500;color:#78716C;">Desinências da Placa Atual:</div>' + expandedHtml + '</div><div style="padding-top:10px;border-top:1px solid #F1EFEA;display:flex;flex-direction:column;gap:8px;"><h3 style="margin:0;font-size:0.76rem;font-weight:600;color:#44403C;">Rotação do Disco 2 (-' + rotation.voiceStepDeg + '° / 0° / +' + rotation.voiceStepDeg + '°)</h3><div class="triad-list">' + triadHtml + '</div></div></div><div class="card" style="display:flex;flex-direction:column;gap:12px;"><div style="display:flex;align-items:baseline;justify-content:space-between;"><h3 style="margin:0;font-size:0.88rem;font-weight:600;">Janelas (Disco 3)</h3><span style="font-size:0.74rem;color:#78716C;">' + state.windows.length + ' ativas</span></div><div class="win-grid">' + quickWinsHtml + '</div></div>';
+      }
+
+      function renderLexemesAsideHtml(verbs, pigment) {
+        var meta = DISC_DECK_METADATA[state.activeDeckId];
+        var isMi = meta.system === 'mi';
+        var deckTabs = DECK_ORDER.map(function (id) {
+          return '<button type="button" data-action="select-deck" data-deck="' + id + '" class="seg-btn' + (id === state.activeDeckId ? ' active' : '') + '">' + escHtml(DISC_DECK_METADATA[id].shortLabel) + '</button>';
+        }).join('');
+
+        var presets = EXTRA_PRESET_VERBS.filter(function (pr) { return pr.conjugationSystem === meta.system && !verbs.some(function (v) { return v.id === pr.id; }); });
+        var presetsHtml = presets.length ? '<div style="display:flex;flex-wrap:wrap;align-items:center;gap:8px;font-size:0.76rem;"><span style="color:#78716C;font-weight:500;">Adicionar:</span>' + presets.map(function (pr) { return '<button type="button" data-action="add-preset-verb" data-preset-id="' + pr.id + '" class="btn btn-secondary btn-sm font-greek" style="font-size:0.88rem;">+ ' + escHtml(pr.lemma) + '</button>'; }).join('') + '</div>' : '';
+
+        var cardsHtml = verbs.map(function (verb, idx) {
+          var isExp = state.expandedLexemeId === verb.id;
+          var isCur = idx === state.selectedVerbIndex;
+          var summary = getPrincipalStemsSummary(verb).join(' · ');
+
+          var stemFields = ['I', 'II', 'III', 'IV', 'V', 'VI'].map(function (k) { return '<div><label class="field-label"><span class="font-mono">' + k + '.</span> Tema ' + k + '</label><input type="text" class="text-input font-greek" style="font-size:0.98rem;font-weight:600;" value="' + escHtml(verb.stems[k]) + '" data-verb-stem="' + k + '" data-verb-id="' + escHtml(verb.id) + '" /></div>'; }).join('');
+          var augKeys = ['I_aug', 'III_aug', 'IV_aug', 'V_aug', 'VI_aug'];
+          if (isMi || verb.augmentedStems.III_mid_aug !== undefined) augKeys.push('III_mid_aug');
+          var augFields = augKeys.map(function (k) { return '<div><label class="field-label">' + k + '</label><input type="text" class="text-input font-greek" style="font-size:0.98rem;font-weight:600;" value="' + escHtml(verb.augmentedStems[k] || '') + '" data-verb-aug="' + k + '" data-verb-id="' + escHtml(verb.id) + '" /></div>'; }).join('');
+
+          return '<div style="border:1px solid ' + (isCur ? pigment.hex : '#E7E5E0') + ';border-radius:8px;background:#FFFFFF;overflow:hidden;"><div style="display:flex;align-items:center;justify-content:space-between;gap:10px;padding:11px 14px;"><button type="button" data-action="toggle-lexeme" data-verb-id="' + escHtml(verb.id) + '" data-index="' + idx + '" style="flex:1;text-align:left;"><div style="display:flex;align-items:baseline;gap:8px;flex-wrap:wrap;"><span class="font-mono tabular-nums" style="font-size:0.74rem;color:#A8A29E;">0' + (idx + 1) + '.</span><span class="font-greek" style="font-size:1.22rem;font-weight:700;color:' + (isCur ? pigment.hex : '#1C1917') + ';">' + escHtml(verb.lemma) + '</span><span style="color:#D6D3D1;">·</span><span style="font-size:0.75rem;color:#78716C;">' + escHtml(verb.gloss) + '</span></div><div class="font-greek" style="font-size:0.8rem;color:#57534E;margin-top:3px;">' + escHtml(summary) + '</div></button><div style="display:flex;align-items:center;gap:6px;">' + (verbs.length > 1 ? '<button type="button" data-action="remove-verb" data-verb-id="' + escHtml(verb.id) + '" class="btn btn-secondary btn-sm">✕</button>' : '') + '<button type="button" data-action="toggle-lexeme" data-verb-id="' + escHtml(verb.id) + '" data-index="' + idx + '" class="btn btn-secondary btn-sm">' + (isExp ? '▴' : '▾') + '</button></div></div>' + (isExp ? '<div style="padding:12px 14px;background:#FAF9F6;border-top:1px solid #F1EFEA;display:flex;flex-direction:column;gap:12px;"><div class="grid-2"><div><label class="field-label">Verbo Principal</label><input type="text" class="text-input font-greek" style="font-size:1rem;" value="' + escHtml(verb.lemma) + '" data-verb-field="lemma" data-verb-id="' + escHtml(verb.id) + '" /></div><div><label class="field-label">Tradução</label><input type="text" class="text-input" value="' + escHtml(verb.gloss) + '" data-verb-field="gloss" data-verb-id="' + escHtml(verb.id) + '" /></div></div><div><div style="font-size:0.75rem;font-weight:600;margin-bottom:6px;">Radicais Puros (I-VI)</div><div class="grid-3">' + stemFields + '</div></div><div><div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;"><span style="font-size:0.75rem;font-weight:600;">Radicais com Aumento</span><button type="button" data-action="prefill-augment" data-verb-id="' + escHtml(verb.id) + '" class="btn btn-secondary btn-sm">Adicionar ἐ-</button></div><div class="grid-3">' + augFields + '</div></div></div>' : '') + '</div>';
+        }).join('');
+
+        return '<div class="card" style="display:flex;flex-direction:column;gap:16px;"><div style="display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:8px;border-bottom:1px solid #F1EFEA;padding-bottom:12px;"><h2 style="margin:0;font-size:1rem;font-weight:600;">Editor de Radicais</h2><div style="display:flex;gap:8px;"><button type="button" data-action="reset-deck" class="btn btn-secondary btn-sm">Restaurar Original</button><button type="button" data-action="create-verb" class="btn btn-primary btn-sm">+ Novo Verbo</button></div></div><div class="segmented-group">' + deckTabs + '</div><p style="margin:0;font-size:0.75rem;color:#78716C;">' + escHtml(meta.fullTitle + ' — ' + meta.subtitle) + '</p>' + presetsHtml + '<div style="display:flex;flex-direction:column;gap:10px;">' + cardsHtml + '</div></div>';
+      }
+
+      function renderTopologyAsideHtml(pigment) {
+        var rowsHtml = state.windows.map(function (win, idx) {
+          var isSel = win.id === state.selectedWindowId;
+          var r = Math.round(Math.hypot(win.x, win.y));
+          var nested = computeNestedBoxMetrics(win);
+          var opts = SLOT_OPTIONS.map(function (o) { return '<option value="' + o.value + '"' + (o.value === win.slotKey ? ' selected' : '') + '>' + escHtml(o.label) + '</option>'; }).join('');
+
+          return '<div style="padding:12px;border:1px solid ' + (isSel ? pigment.hex : '#E7E5E0') + ';border-radius:8px;background:#FFFFFF;display:flex;flex-direction:column;gap:10px;"><div style="display:flex;align-items:center;justify-content:space-between;gap:8px;"><button type="button" data-action="select-window" data-win-id="' + escHtml(win.id) + '" class="font-mono tabular-nums" style="font-size:0.73rem;color:#57534E;text-align:left;"><strong style="color:#1C1917;">' + String(idx + 1).padStart(2, '0') + '.</strong> r=' + r + ' · D3:' + Math.round(nested.d3Outer.width) + '×' + Math.round(nested.d3Outer.height) + '</button>' + (state.windows.length > 1 ? '<button type="button" data-action="remove-window" data-win-id="' + escHtml(win.id) + '" class="btn btn-secondary btn-sm">✕</button>' : '') + '</div><div class="grid-2"><div><label class="field-label">Rótulo da Janela</label><input type="text" class="text-input" value="' + escHtml(win.name) + '" data-win-field="name" data-win-id="' + escHtml(win.id) + '" /></div><div><label class="field-label">Placa Morfológica</label><select class="select-input" data-win-field="slotKey" data-win-id="' + escHtml(win.id) + '">' + opts + '</select></div></div><div class="grid-5"><div><label class="field-label">X</label><input type="number" class="num-input font-mono tabular-nums" value="' + win.x + '" data-win-num="x" data-win-id="' + escHtml(win.id) + '" /></div><div><label class="field-label">Y</label><input type="number" class="num-input font-mono tabular-nums" value="' + win.y + '" data-win-num="y" data-win-id="' + escHtml(win.id) + '" /></div><div><label class="field-label">W1 Raiz</label><input type="number" min="20" max="90" class="num-input font-mono tabular-nums" value="' + win.stemWidth + '" data-win-num="stemWidth" data-win-id="' + escHtml(win.id) + '" /></div><div><label class="field-label">W2 Des.</label><input type="number" min="24" max="110" class="num-input font-mono tabular-nums" value="' + win.desinenceWidth + '" data-win-num="desinenceWidth" data-win-id="' + escHtml(win.id) + '" /></div><div><label class="field-label">Alt. H</label><input type="number" min="18" max="60" class="num-input font-mono tabular-nums" value="' + win.height + '" data-win-num="height" data-win-id="' + escHtml(win.id) + '" /></div></div></div>';
+        }).join('');
+
+        return '<div class="card" style="display:flex;flex-direction:column;gap:14px;"><div style="display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:8px;border-bottom:1px solid #F1EFEA;padding-bottom:12px;"><div><h2 style="margin:0;font-size:1rem;font-weight:600;">Configuração das Janelas</h2><p style="margin:2px 0 0;font-size:0.74rem;color:#78716C;">Coordenadas para todos os Discos.</p></div><div style="display:flex;gap:8px;"><button type="button" data-action="reset-windows" class="btn btn-secondary btn-sm">Padronizar</button><button type="button" data-action="add-window" class="btn btn-primary btn-sm">+ Nova Janela</button></div></div><div style="display:flex;flex-direction:column;gap:10px;max-height:680px;overflow-y:auto;padding-right:2px;">' + rowsHtml + '</div></div>';
+      }
+
+      function renderMathAndDataAsideHtml(verbs, rotation, conjugationSystem, pigment) {
+        var maxStep = Math.min(20, Math.max(8, Math.floor(360 / Math.max(1, verbs.length) / 3.2)));
+        var csv = exportMatrixAsSemicolonCSV(verbs, state.windows, state.preferredVoiceStepDeg, conjugationSystem);
+        var jsonStr = JSON.stringify({ metadata: { architecture: 'Volvella Grega Multicamadas', activeDeck: DISC_DECK_METADATA[state.activeDeckId].fullTitle }, decksDisc1: state.decks, desinencePlatesDisc2: { omega: HUEBER_DESINENCE_PLATES, mi: HUEBER_MI_DESINENCE_PLATES } }, null, 2);
+
+        var tableRows = verbs.map(function (verb, vIdx) {
+          return VOICES_ORDER.map(function (vId) {
+            var st = computeRotationalState(vIdx, verbs.length, vId, state.preferredVoiceStepDeg);
+            var isAct = vIdx === rotation.verbIndex && vId === rotation.voice;
+            return '<tr style="background:' + (isAct ? pigment.softRgba : '#FFFFFF') + ';font-weight:' + (isAct ? '600' : '400') + ';"><td class="font-greek" style="font-size:0.9rem;">' + escHtml(verb.lemma) + '</td><td>' + VOICE_METADATA[vId].label + '</td><td class="font-mono tabular-nums">' + st.thetaVerbDeg + '°</td><td class="font-mono tabular-nums">' + st.thetaVoiceDeg + '°</td><td class="font-mono tabular-nums" style="color:' + (isAct ? pigment.hex : '#1C1917') + ';">' + st.disc1StemCompensationDeg + '°</td><td class="font-mono tabular-nums">' + st.disc2DesinenceCompensationDeg + '°</td></tr>';
+          }).join('');
+        }).join('');
+
+        return '<div style="display:flex;flex-direction:column;gap:16px;"><div class="card" style="display:flex;flex-direction:column;gap:12px;"><h2 style="margin:0;font-size:0.98rem;font-weight:600;">Ajustes Técnicos</h2><div class="font-mono tabular-nums" style="padding:10px 12px;background:#FAF9F6;border:1px solid #E7E5E0;border-radius:6px;font-size:0.74rem;display:flex;flex-direction:column;gap:4px;"><div><strong>Disco 1 (Raiz):</strong> -(θ_Verbo + θ_Voz) = <span style="color:' + pigment.hex + ';font-weight:700;">' + rotation.disc1StemCompensationDeg + '°</span></div><div><strong>Disco 2 (Desinência):</strong> -θ_Voz = <strong>' + rotation.disc2DesinenceCompensationDeg + '°</strong></div></div><div class="grid-2"><div><div style="display:flex;justify-content:space-between;font-size:0.74rem;margin-bottom:4px;"><span>Passo Disco 2 (±δ_Voz)</span><strong class="font-mono tabular-nums">±' + rotation.voiceStepDeg + '°</strong></div><input type="range" min="8" max="' + maxStep + '" step="1" value="' + Math.min(state.preferredVoiceStepDeg, maxStep) + '" data-input="voice-step" style="width:100%;accent-color:#1C1917;" /></div><div><div style="display:flex;justify-content:space-between;font-size:0.74rem;margin-bottom:4px;"><span>Kerning Junta (Δx)</span><strong class="font-mono tabular-nums">' + state.kerningPx.toFixed(1) + ' px</strong></div><input type="range" min="0.4" max="3.6" step="0.2" value="' + state.kerningPx + '" data-input="kerning" style="width:100%;accent-color:#1C1917;" /></div></div><div style="overflow-x:auto;border:1px solid #E7E5E0;border-radius:6px;"><table class="data-table"><thead><tr><th>Verbo</th><th>Diátese</th><th>θ_Verbo</th><th>θ_Voz</th><th>Disco 1</th><th>Disco 2</th></tr></thead><tbody>' + tableRows + '</tbody></table></div></div><div class="card" style="display:flex;flex-direction:column;gap:10px;"><div style="display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:8px;"><strong style="font-size:0.86rem;">Exportar para Planilha</strong><div style="display:flex;gap:6px;"><button type="button" data-action="copy-csv" class="btn btn-secondary btn-sm">Copiar CSV (;)</button><button type="button" data-action="download-csv" class="btn btn-primary btn-sm">Baixar CSV (;)</button></div></div><pre class="font-mono" style="margin:0;padding:10px;background:#FAF9F6;border:1px solid #E7E5E0;border-radius:6px;font-size:0.68rem;max-height:140px;overflow:auto;">' + escHtml(csv) + '</pre></div><div class="card" style="display:flex;flex-direction:column;gap:10px;"><div style="display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:8px;"><strong style="font-size:0.86rem;">Exportar JSON</strong><div style="display:flex;gap:6px;"><button type="button" data-action="toggle-json-import" class="btn btn-secondary btn-sm">Importar</button><button type="button" data-action="copy-json" class="btn btn-secondary btn-sm">Copiar</button></div></div>' + (state.jsonImportOpen ? '<div style="display:flex;flex-direction:column;gap:8px;"><textarea id="json-import-box" rows="7" class="code-textarea font-mono" style="font-size:0.72rem;">' + escHtml(state.jsonDraft) + '</textarea>' + (state.jsonImportError ? '<div class="notice-err">' + escHtml(state.jsonImportError) + '</div>' : '') + '<div style="display:flex;justify-content:flex-end;gap:8px;"><button type="button" data-action="toggle-json-import" class="btn btn-secondary btn-sm">Cancelar</button><button type="button" data-action="apply-json-import" class="btn btn-primary btn-sm">Aplicar</button></div></div>' : '<pre class="font-mono" style="margin:0;padding:10px;background:#FAF9F6;border:1px solid #E7E5E0;border-radius:6px;font-size:0.68rem;max-height:180px;overflow:auto;">' + escHtml(jsonStr) + '</pre>') + '</div></div>';
+      }
+
+      function renderOfflineHtmlAsideHtml() {
+        var fullHtml = buildStandaloneUnifiedHtml(state.includeEditsInHtml);
+        var kb = (fullHtml.length / 1024).toFixed(1);
+        return '<div class="card" style="display:flex;flex-direction:column;gap:14px;"><div style="border-bottom:1px solid #F1EFEA;padding-bottom:10px;"><h2 style="margin:0;font-size:1rem;font-weight:600;">Exportar HTML (Offline)</h2><div class="font-mono tabular-nums" style="margin-top:4px;font-size:0.73rem;color:#78716C;">1 arquivo .html · ~' + kb + ' KB</div></div><p style="margin:0;font-size:0.78rem;line-height:1.55;color:#57534E;">Você pode baixar o instrumento todo consolidado. Útil para funcionar em qualquer dispositivo sem internet.</p><label style="display:flex;align-items:flex-start;gap:8px;font-size:0.76rem;color:#44403C;cursor:pointer;"><input type="checkbox" data-input="include-edits"' + (state.includeEditsInHtml ? ' checked' : '') + ' style="margin-top:2px;accent-color:#1C1917;" /><span>Salvar minhas edições atuais no arquivo exportado</span></label><div style="display:flex;flex-wrap:wrap;gap:8px;"><button type="button" data-action="download-unified-html" class="btn btn-primary">Baixar volvella.html</button><button type="button" data-action="copy-unified-html" class="btn btn-secondary">Copiar Código HTML Integral</button></div>' + (state.statusBanner ? '<div class="notice-ok">' + escHtml(state.statusBanner) + '</div>' : '') + '<div><div style="display:flex;justify-content:space-between;font-size:0.73rem;color:#57534E;margin-bottom:4px;"><strong>Código-Fonte Integral (.html)</strong><span>Clique para selecionar tudo</span></div><textarea id="unified-html-textarea" readonly spellcheck="false" class="code-textarea font-mono" style="height:260px;font-size:0.68rem;line-height:1.45;background:#FAF9F5;">' + escHtml(fullHtml) + '</textarea></div></div>';
+      }
+
+      /* =========================================================================
+         8. RENDERIZAÇÃO MESTRA DA APLICAÇÃO
+         ========================================================================= */
+      function renderApp() {
+        applyPigmentCssVars();
+
+        var pigment = PIGMENT_THEMES[state.pigmentId] || PIGMENT_THEMES.crimson;
+        var activeDeckMeta = DISC_DECK_METADATA[state.activeDeckId];
+        var conjugationSystem = activeDeckMeta.system;
+        var verbs = state.decks[state.activeDeckId] || INITIAL_DECKS.omega_barytone;
+        if (state.selectedVerbIndex >= verbs.length) state.selectedVerbIndex = Math.max(0, verbs.length - 1);
+        var currentVerb = verbs[state.selectedVerbIndex] || verbs[0];
+
+        var rotation = computeRotationalState(state.selectedVerbIndex, verbs.length, state.selectedVoice, state.preferredVoiceStepDeg);
+        syncDiscRotationTargets(rotation);
+
+        var selectedWindow = state.windows.find(function (w) { return w.id === state.selectedWindowId; }) || state.windows[0];
+        var printBundle = renderAllPrintPagesHtml(rotation.voiceStepDeg);
+
+        var appRoot = document.getElementById('app');
+        if (!appRoot) return;
+
+        if (state.isPrintView) {
+          appRoot.innerHTML = '<div class="print-studio-bg"><div class="print-toolbar no-print"><div style="display:flex;flex-wrap:wrap;align-items:center;gap:12px;"><button type="button" data-action="close-print-view" class="btn btn-secondary">← Voltar</button><label style="font-size:0.78rem;font-weight:600;color:#44403C;">Conjunto: <select data-input="print-scope" class="select-input" style="width:auto;display:inline-block;margin-left:4px;"><option value="all_systems"' + (state.printScopeId === 'all_systems' ? ' selected' : '') + '>Completo: -ω + -μι</option><option value="omega_only"' + (state.printScopeId === 'omega_only' ? ' selected' : '') + '>-ω Apenas</option><option value="mi_only"' + (state.printScopeId === 'mi_only' ? ' selected' : '') + '>-μι Apenas</option></select></label><label style="font-size:0.78rem;font-weight:600;color:#44403C;">Tamanho: <select data-input="print-scale" class="select-input" style="width:auto;display:inline-block;margin-left:4px;"><option value="a4_optimal"' + (state.printScaleId === 'a4_optimal' ? ' selected' : '') + '>' + SCALE_PRESETS.a4_optimal.label + '</option><option value="a3_optimal"' + (state.printScaleId === 'a3_optimal' ? ' selected' : '') + '>' + SCALE_PRESETS.a3_optimal.label + '</option></select></label></div><button type="button" data-action="trigger-browser-print" class="btn btn-primary">Exportar PDF / Imprimir (' + printBundle.totalPages + ' Folhas)</button></div><div class="no-print" style="max-width:800px;margin:16px auto 0;"><div style="padding:10px 16px;background:#FEF2F2;border:1px solid #FECACA;border-radius:8px;"><strong style="color:#991B1B;">⚠️ ATENÇÃO:</strong><span style="color:#7F1D1D;"> Para exportar o PDF colorido ou imprimir com cores, você <strong>precisa habilitar a opção "Gráficos de plano de fundo" (ou "Cores de fundo")</strong> na tela de impressão do seu navegador.</span></div></div><div class="print-pages-stack">' + printBundle.pagesHtml + '</div></div>';
+          return;
+        }
+
+        var navItems = [{ id: 'instrument', label: 'Instrumento' }, { id: 'lexemes', label: 'Radicais (Discos)' }, { id: 'topology', label: 'Janelas (Posições)' }, { id: 'math_data', label: 'Dados & Geometria' }, { id: 'offline_html', label: 'Exportar' }];
+        var navHtml = navItems.map(function (sec) { return '<button type="button" data-action="nav-section" data-section="' + sec.id + '" class="nav-tab' + (state.activeSection === sec.id ? ' active' : '') + '">' + escHtml(sec.label) + '</button>'; }).join('');
+        var deckTabsHtml = DECK_ORDER.map(function (deckId) { return '<button type="button" data-action="select-deck" data-deck="' + deckId + '" class="seg-btn' + (deckId === state.activeDeckId ? ' active' : '') + '">' + escHtml(DISC_DECK_METADATA[deckId].shortLabel) + '</button>'; }).join('');
+
+        var globalVerbOptions = '<optgroup label="Roda em -ω · Série I">' + state.decks.omega_barytone.map(function (v, i) { return '<option value="omega_barytone:' + i + '"' + ((state.activeDeckId === 'omega_barytone' && state.selectedVerbIndex === i) ? ' selected' : '') + '>' + escHtml(v.lemma + ' — ' + v.gloss) + '</option>'; }).join('') + '</optgroup><optgroup label="Roda em -ω · Série II">' + state.decks.omega_contract.map(function (v, i) { return '<option value="omega_contract:' + i + '"' + ((state.activeDeckId === 'omega_contract' && state.selectedVerbIndex === i) ? ' selected' : '') + '>' + escHtml(v.lemma + ' — ' + v.gloss) + '</option>'; }).join('') + '</optgroup><optgroup label="Disco -μι">' + state.decks.mi_athematic.map(function (v, i) { return '<option value="mi_athematic:' + i + '"' + ((state.activeDeckId === 'mi_athematic' && state.selectedVerbIndex === i) ? ' selected' : '') + '>' + escHtml(v.lemma + ' — ' + v.gloss) + '</option>'; }).join('') + '</optgroup>';
+
+        var voiceBtnsHtml = VOICES_ORDER.map(function (vId) {
+          var mult = VOICE_METADATA[vId].stepMultiplier;
+          var deg = Number((mult * rotation.voiceStepDeg).toFixed(1));
+          return '<button type="button" data-action="select-voice" data-voice="' + vId + '" class="seg-btn' + (state.selectedVoice === vId ? ' active' : '') + '">' + VOICE_METADATA[vId].label + ' (' + (deg > 0 ? '+' : '') + deg + '°)</button>';
+        }).join('');
+
+        var swatchesHtml = ['crimson', 'cobalt', 'bronze', 'obsidian'].map(function (pid) { return '<button type="button" data-action="select-pigment" data-pigment="' + pid + '" title="' + escHtml(PIGMENT_THEMES[pid].label) + '" class="swatch-dot' + (state.pigmentId === pid ? ' active' : '') + '" style="background:' + PIGMENT_THEMES[pid].hex + ';"></button>'; }).join('');
+
+        var asideContentHtml = '';
+        if (state.activeSection === 'instrument') asideContentHtml = renderInstrumentAsideHtml(currentVerb, selectedWindow, rotation, conjugationSystem, pigment);
+        else if (state.activeSection === 'lexemes') asideContentHtml = renderLexemesAsideHtml(verbs, pigment);
+        else if (state.activeSection === 'topology') asideContentHtml = renderTopologyAsideHtml(pigment);
+        else if (state.activeSection === 'math_data') asideContentHtml = renderMathAndDataAsideHtml(verbs, rotation, conjugationSystem, pigment);
+        else if (state.activeSection === 'offline_html') asideContentHtml = renderOfflineHtmlAsideHtml();
+
+        appRoot.innerHTML = '<div class="hidden-print-mount">' + printBundle.pagesHtml + '</div><div class="no-print"><header class="top-header"><a href="#volvella" data-action="nav-section" data-section="instrument" class="brand-link">Volvella Grammatica</a><nav class="top-nav">' + navHtml + '</nav><div class="header-actions"><button type="button" data-action="open-print-view" class="btn btn-primary">Exportar PDF / Imprimir Moldes</button></div></header><main class="studio-main"><section class="card stage-card"><div class="toolbar-row"><div class="segmented-group" role="tablist">' + deckTabsHtml + '</div><div style="font-size:0.76rem;color:#78716C;">Anel acoplado: <strong style="color:#1C1917;">' + (conjugationSystem === 'mi' ? 'Disco 2-ΜΙ' : 'Disco 2-Ω') + '</strong></div></div><div class="toolbar-row"><div style="display:flex;align-items:center;gap:8px;"><span style="font-size:0.76rem;font-weight:500;color:#78716C;">Verbo Principal:</span><div class="verb-stepper"><button type="button" data-action="step-verb" data-delta="-1" class="step-arrow">‹</button><select data-input="global-verb" class="verb-select">' + globalVerbOptions + '</select><button type="button" data-action="step-verb" data-delta="1" class="step-arrow">›</button></div></div><div style="display:flex;align-items:center;gap:8px;"><span style="font-size:0.76rem;font-weight:500;color:#78716C;">Voz:</span><div class="segmented-group">' + voiceBtnsHtml + '</div></div></div><div style="width:100%;display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:12px;margin-bottom:6px;"><div style="font-size:0.78rem;color:#57534E;"><span style="font-weight:500;color:#78716C;">Radicais (I–VI): </span><strong class="font-greek" style="font-size:0.95rem;color:#1C1917;">' + escHtml(getPrincipalStemsSummary(currentVerb).join(' · ')) + '</strong></div><div style="display:flex;align-items:center;gap:14px;"><div class="swatch-row">' + swatchesHtml + '</div><button type="button" data-action="toggle-xray" class="btn ' + (state.xrayMode ? 'btn-primary' : 'btn-secondary') + ' btn-sm">' + (state.xrayMode ? 'Raio-X Ativo' : 'Visualização Limpa') + '</button></div></div><div class="volvella-svg-wrap">' + renderVolvellaSvg(verbs, state.windows, rotation, conjugationSystem, pigment) + '</div><div class="stage-footer font-mono tabular-nums"><div>θ_Verbo: ' + rotation.thetaVerbDeg + '° · θ_Voz: ' + (rotation.thetaVoiceDeg > 0 ? '+' + rotation.thetaVoiceDeg : rotation.thetaVoiceDeg) + '° · <strong style="color:' + pigment.hex + ';">Disco 1: ' + rotation.disc1StemCompensationDeg + '°</strong></div><div style="font-family:var(--font-sans);">' + escHtml(activeDeckMeta.fullTitle) + ' (' + verbs.length + ' verbos)</div></div></section><aside class="aside-stack">' + asideContentHtml + '</aside></main></div>';
+      }
+
+      /* =========================================================================
+         9. DELEGAÇÃO DE EVENTOS GLOBAL
+         ========================================================================= */
+      function stepVerb(delta) {
+        var sys = DISC_DECK_METADATA[state.activeDeckId].system;
+        if (sys === 'omega') {
+          var pool = [];
+          state.decks.omega_barytone.forEach(function (_, i) { pool.push({ deckId: 'omega_barytone', idx: i }); });
+          state.decks.omega_contract.forEach(function (_, i) { pool.push({ deckId: 'omega_contract', idx: i }); });
+          if (!pool.length) return;
+          var curPos = pool.findIndex(function (p) { return p.deckId === state.activeDeckId && p.idx === state.selectedVerbIndex; });
+          var nextPos = ((curPos >= 0 ? curPos : 0) + delta + pool.length) % pool.length;
+          state.activeDeckId = pool[nextPos].deckId;
+          state.selectedVerbIndex = pool[nextPos].idx;
+        } else {
+          var list = state.decks[state.activeDeckId] || [];
+          if (!list.length) return;
+          state.selectedVerbIndex = (state.selectedVerbIndex + delta + list.length) % list.length;
+        }
+      }
+
+      function copyTextReliable(text, fallbackTextareaId) {
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard.writeText(text).catch(function () {
+            var ta = fallbackTextareaId ? document.getElementById(fallbackTextareaId) : null;
+            if (ta) { ta.focus(); ta.select(); try { document.execCommand('copy'); } catch (_) {} }
+          });
+          return;
+        }
+        var el = fallbackTextareaId ? document.getElementById(fallbackTextareaId) : null;
+        if (el) { el.focus(); el.select(); try { document.execCommand('copy'); } catch (_) {} }
+      }
+
+      document.addEventListener('click', function (e) {
+        if (e.target && e.target.id === 'unified-html-textarea') { e.target.select(); return; }
+        var btn = e.target && e.target.closest ? e.target.closest('[data-action]') : null;
+        if (!btn) return;
+
+        var action = btn.getAttribute('data-action');
+        if (btn.tagName === 'A') e.preventDefault();
+
+        if (action === 'nav-section') { state.activeSection = btn.getAttribute('data-section') || 'instrument'; state.statusBanner = ''; renderApp(); }
+        else if (action === 'select-deck') { state.activeDeckId = btn.getAttribute('data-deck') || 'omega_barytone'; state.selectedVerbIndex = 0; state.expandedLexemeId = (state.decks[state.activeDeckId] || [])[0] ? state.decks[state.activeDeckId][0].id : ''; renderApp(); }
+        else if (action === 'select-verb') { state.selectedVerbIndex = Number(btn.getAttribute('data-index')) || 0; renderApp(); }
+        else if (action === 'step-verb') { stepVerb(Number(btn.getAttribute('data-delta')) || 1); renderApp(); }
+        else if (action === 'select-voice') { state.selectedVoice = btn.getAttribute('data-voice') || 'active'; renderApp(); }
+        else if (action === 'select-window') { state.selectedWindowId = btn.getAttribute('data-win-id') || 'w1'; renderApp(); }
+        else if (action === 'select-pigment') { state.pigmentId = btn.getAttribute('data-pigment') || 'crimson'; renderApp(); }
+        else if (action === 'toggle-xray') { state.xrayMode = !state.xrayMode; renderApp(); }
+        else if (action === 'open-print-view') { state.isPrintView = true; renderApp(); }
+        else if (action === 'close-print-view') { state.isPrintView = false; renderApp(); }
+        else if (action === 'trigger-browser-print') { window.print(); }
+        else if (action === 'quick-download-html' || action === 'download-unified-html') {
+          var htmlCode = buildStandaloneUnifiedHtml(state.includeEditsInHtml);
+          var sizeKb = triggerDownloadBlob(htmlCode, 'volvella.html', 'text/html;charset=utf-8');
+          state.activeSection = 'offline_html';
+          state.statusBanner = 'Arquivo (' + sizeKb + ' KB) gerado!';
+          renderApp();
+        }
+        else if (action === 'copy-unified-html') {
+          copyTextReliable(buildStandaloneUnifiedHtml(state.includeEditsInHtml), 'unified-html-textarea');
+          state.statusBanner = 'Código HTML copiado!';
+          renderApp();
+        }
+        else if (action === 'toggle-lexeme') {
+          var vid = btn.getAttribute('data-verb-id') || '';
+          state.selectedVerbIndex = Number(btn.getAttribute('data-index')) || 0;
+          state.expandedLexemeId = state.expandedLexemeId === vid ? '' : vid;
+          renderApp();
+        }
+        else if (action === 'create-verb') {
+          var isMi = DISC_DECK_METADATA[state.activeDeckId].system === 'mi';
+          var newId = 'verb_' + Date.now();
+          var created = isMi ? { id: newId, lemma: 'δείκνυμι', gloss: 'mostrar, revelar', conjugationSystem: 'mi', stems: { I: 'δεικνυ', II: 'δειξ', III: 'δειξ', IV: 'δεδειχ', V: 'δεδειγ', VI: 'δειχθ' }, augmentedStems: { I_aug: 'ἐδεικνυ', III_aug: 'ἐδειξ', III_mid_aug: 'ἐδειξα', IV_aug: 'ἐδεδειχ', V_aug: 'ἐδεδειγ', VI_aug: 'ἐδειχθ' }, augmentLabel: 'ἐ- (silábico)', aoristVariant: 'sigmatic', stemVConsonant: 'velar' } : { id: newId, lemma: 'κελεύω', gloss: 'ordenar, exortar', conjugationSystem: 'omega', stems: { I: 'κελευ', II: 'κελευσ', III: 'κελευσ', IV: 'κεκελευκ', V: 'κεκελευσ', VI: 'κελευσθ' }, augmentedStems: { I_aug: 'ἐκελευ', III_aug: 'ἐκελευσ', IV_aug: 'ἐκεκελευκ', V_aug: 'ἐκεκελευσ', VI_aug: 'ἐκελευσθ' }, augmentLabel: 'ἐ- (silábico)', aoristVariant: 'sigmatic', stemVConsonant: 'dental' };
+          state.decks[state.activeDeckId].push(created);
+          state.selectedVerbIndex = state.decks[state.activeDeckId].length - 1;
+          state.expandedLexemeId = newId;
+          renderApp();
+        }
+        else if (action === 'add-preset-verb') {
+          var found = EXTRA_PRESET_VERBS.find(function (p) { return p.id === btn.getAttribute('data-preset-id'); });
+          if (found) { state.decks[state.activeDeckId].push(deepClone(found)); state.selectedVerbIndex = state.decks[state.activeDeckId].length - 1; state.expandedLexemeId = found.id; renderApp(); }
+        }
+        else if (action === 'remove-verb') {
+          var remId = btn.getAttribute('data-verb-id');
+          if (state.decks[state.activeDeckId].length > 1) { state.decks[state.activeDeckId] = state.decks[state.activeDeckId].filter(function (v) { return v.id !== remId; }); state.selectedVerbIndex = Math.min(state.selectedVerbIndex, state.decks[state.activeDeckId].length - 1); renderApp(); }
+        }
+        else if (action === 'prefill-augment') {
+          var augVid = btn.getAttribute('data-verb-id');
+          var targetVerb = state.decks[state.activeDeckId].find(function (v) { return v.id === augVid; });
+          if (targetVerb) { targetVerb.augmentedStems.I_aug = 'ἐ' + targetVerb.stems.I; targetVerb.augmentedStems.III_aug = 'ἐ' + targetVerb.stems.III; targetVerb.augmentedStems.IV_aug = 'ἐ' + targetVerb.stems.IV; targetVerb.augmentedStems.V_aug = 'ἐ' + targetVerb.stems.V; targetVerb.augmentedStems.VI_aug = 'ἐ' + targetVerb.stems.VI; renderApp(); }
+        }
+        else if (action === 'reset-deck') { state.decks[state.activeDeckId] = deepClone(INITIAL_DECKS[state.activeDeckId]); state.selectedVerbIndex = 0; renderApp(); }
+        else if (action === 'add-window') { var nw = { id: 'w_' + Date.now(), slotKey: 'pres_ind', name: 'Nova Janela', greekSubtitle: 'Νέα Θυρίς', hemisphere: 'primary_axis', x: 0, y: -75, stemWidth: 43, desinenceWidth: 59, height: 28 }; state.windows.push(nw); state.selectedWindowId = nw.id; renderApp(); }
+        else if (action === 'remove-window') { var wid = btn.getAttribute('data-win-id'); if (state.windows.length > 1) { state.windows = state.windows.filter(function (w) { return w.id !== wid; }); if (state.selectedWindowId === wid) state.selectedWindowId = state.windows[0].id; renderApp(); } }
+        else if (action === 'reset-windows') { state.windows = deepClone(DEFAULT_WINDOWS); state.selectedWindowId = 'w1'; renderApp(); }
+        else if (action === 'copy-csv') { copyTextReliable(exportMatrixAsSemicolonCSV(state.decks[state.activeDeckId], state.windows, state.preferredVoiceStepDeg, DISC_DECK_METADATA[state.activeDeckId].system), ''); }
+        else if (action === 'download-csv') { triggerDownloadBlob(exportMatrixAsSemicolonCSV(state.decks[state.activeDeckId], state.windows, state.preferredVoiceStepDeg, DISC_DECK_METADATA[state.activeDeckId].system), 'volvella_' + state.activeDeckId + '.csv', 'text/csv;charset=utf-8'); }
+        else if (action === 'copy-json') { copyTextReliable(JSON.stringify({ decksDisc1: state.decks, desinencePlatesDisc2: { omega: HUEBER_DESINENCE_PLATES, mi: HUEBER_MI_DESINENCE_PLATES } }, null, 2), ''); }
+        else if (action === 'toggle-json-import') { state.jsonImportOpen = !state.jsonImportOpen; state.jsonDraft = JSON.stringify({ lexemesDisc1: state.decks[state.activeDeckId] }, null, 2); state.jsonImportError = ''; renderApp(); }
+        else if (action === 'apply-json-import') {
+          var rawText = document.getElementById('json-import-box') ? document.getElementById('json-import-box').value : state.jsonDraft;
+          try {
+            var parsed = JSON.parse(rawText);
+            var list = Array.isArray(parsed) ? parsed : (parsed.lexemesDisc1 || parsed.lexemes);
+            if (!Array.isArray(list) || !list.length) { state.jsonImportError = 'Erro: o JSON precisa ter um array com verbos.'; }
+            else { state.decks[state.activeDeckId] = list; state.selectedVerbIndex = 0; state.jsonImportOpen = false; state.jsonImportError = ''; }
+          } catch (_) { state.jsonImportError = 'Sintaxe JSON inválida.'; }
+          renderApp();
+        }
+      });
+
+      document.addEventListener('change', function (e) {
+        var t = e.target;
+        if (!t) return;
+        var inp = t.getAttribute('data-input');
+        if (inp === 'global-verb') { var parts = String(t.value).split(':'); if (state.decks[parts[0]]) { state.activeDeckId = parts[0]; state.selectedVerbIndex = Number(parts[1]) || 0; renderApp(); } }
+        else if (inp === 'kerning') { state.kerningPx = Number(t.value) || 1.2; renderApp(); }
+        else if (inp === 'voice-step') { state.preferredVoiceStepDeg = Number(t.value) || 20; renderApp(); }
+        else if (inp === 'include-edits') { state.includeEditsInHtml = !!t.checked; renderApp(); }
+        else if (inp === 'print-scope') { state.printScopeId = t.value; renderApp(); }
+        else if (inp === 'print-scale') { state.printScaleId = t.value; renderApp(); }
+        else if (t.hasAttribute('data-verb-field')) { var vObj = state.decks[state.activeDeckId].find(function (v) { return v.id === t.getAttribute('data-verb-id'); }); if (vObj) { vObj[t.getAttribute('data-verb-field')] = t.value; renderApp(); } }
+        else if (t.hasAttribute('data-verb-stem')) { var svObj = state.decks[state.activeDeckId].find(function (v) { return v.id === t.getAttribute('data-verb-id'); }); if (svObj) { svObj.stems[t.getAttribute('data-verb-stem')] = t.value; renderApp(); } }
+        else if (t.hasAttribute('data-verb-aug')) { var avObj = state.decks[state.activeDeckId].find(function (v) { return v.id === t.getAttribute('data-verb-id'); }); if (avObj) { avObj.augmentedStems[t.getAttribute('data-verb-aug')] = t.value; renderApp(); } }
+        else if (t.hasAttribute('data-win-field')) { var wObj = state.windows.find(function (w) { return w.id === t.getAttribute('data-win-id'); }); if (wObj) { wObj[t.getAttribute('data-win-field')] = t.value; renderApp(); } }
+        else if (t.hasAttribute('data-win-num')) {
+          var nwObj = state.windows.find(function (w) { return w.id === t.getAttribute('data-win-id'); });
+          if (nwObj) {
+            var wn = t.getAttribute('data-win-num'), val = Number(t.value) || 0;
+            if (wn === 'stemWidth') val = Math.max(20, val);
+            if (wn === 'desinenceWidth') val = Math.max(24, val);
+            if (wn === 'height') val = Math.max(18, val);
+            nwObj[wn] = val;
+            renderApp();
+          }
+        }
+      });
+
+      renderApp();
+    })();
+  </script>
+</body>
+</html>
